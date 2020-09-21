@@ -10,6 +10,13 @@ const routes = [
         component: function () {
             return import('../views/Home.vue')
         }
+    },
+    {
+        path: '/base',
+        name: 'Base',
+        component: function () {
+            return import('../views/base-component')
+        }
     }
 ];
 

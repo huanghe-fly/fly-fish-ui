@@ -13,7 +13,7 @@
                 </ul>
             </div>
             <div class="content">
-                <div class="main"><router-view/></div>
+                <div class="main"><router-view /></div>
                 <div class="footer">Footer</div>
             </div>
         </div>
