@@ -352,3 +352,38 @@
 .fly-disabled {
     cursor: not-allowed !important;
 }
+.fly-menu {
+    width: 100%;
+    height: 100%;
+    li.menu-item {
+        cursor: pointer;
+        border-left: 3px solid transparent;
+        line-height: 40px;
+        padding-left: 30px;
+        color: #b8c7ce;
+        &.menuAction {
+            background-color: #3333334d;
+            color: #fff;
+            border-left: 3px solid #0066ff;
+        }
+    }
+    .submenu {
+        width: 500px;
+        height: 300px;
+        border: 1px solid #999999;
+        background-color: #fff;
+        color: #333;
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 160px;
+        span {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        span:hover {
+
+            color: #06f;
+        }
+    }
+}

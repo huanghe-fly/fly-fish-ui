@@ -1,9 +1,6 @@
 <template>
     <div id="app">
         <Layout></Layout>
-        <!--<div id="nav">
-            <router-link to="/">Home</router-link>
-        </div>-->
     </div>
 </template>
 <script>
