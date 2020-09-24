@@ -8,7 +8,6 @@
                 <li class="menu-item"
                     :class="activeIndex === index ? 'menuAction' : ''"
                     @click="getSubmenu(index, $event)"
-                    @mousemove="menuItemMove"
                     @mouseleave="menuItemLeave">
                     <i class="icon fa" :class="menu.icon"></i>
                     <span>{{menu.name}}</span>
@@ -54,8 +53,7 @@
             },
             // 是否显示子菜单
             showSubmenu: function () {
-                // return (this.mouseMoveMenuItem || this.mouseMoveSubmenu)
-                return true
+                return (this.mouseMoveMenuItem || this.mouseMoveSubmenu)
             }
         },
         created() {
@@ -73,44 +71,32 @@
                     left: `${event.currentTarget.offsetWidth + 5}px`,
                     display: 'block'
                 };
-            },
-            // 鼠标移入一级菜单
-            menuItemMove() {
-                const vm = this;
-                vm.mouseMoveMenuItem = true;
-                /*setTimeout(() => {
-
-                }, 100);*/
+                this.mouseMoveMenuItem = true;
             },
             // 鼠标移出一级菜单
             menuItemLeave() {
                 const vm = this;
-                vm.mouseMoveMenuItem = false;
-                if (!this.mouseMoveSubmenu) {
-                    // this.submenuStyle['display'] = 'none';
-                }
-                /*setTimeout(() => {
-
-                }, 100);*/
+                setTimeout(() => {
+                    vm.mouseMoveMenuItem = false;
+                    if (!this.mouseMoveSubmenu) {
+                        this.submenuStyle['display'] = 'none';
+                    }
+                }, 200);
             },
             // 鼠标移入子级菜单
             subMove() {
                 const vm = this;
                 vm.mouseMoveSubmenu = true;
-                /*setTimeout(() => {
-
-                }, 100);*/
             },
             // 鼠标移出子级菜单
             subLeave() {
                 const vm = this;
-                vm.mouseMoveSubmenu = false;
-                if (!this.mouseMoveMenuItem) {
-                    // this.submenuStyle['display'] = 'none';
-                }
-                /*setTimeout(() => {
-
-                }, 100);*/
+                setTimeout(() => {
+                    vm.mouseMoveSubmenu = false;
+                    if (!this.mouseMoveMenuItem) {
+                        this.submenuStyle['display'] = 'none';
+                    }
+                }, 200);
             }
         },
         mounted() {
