@@ -19,9 +19,12 @@
              :style="submenuStyle"
              @mousemove="subMove"
              @mouseleave="subLeave">
-            <template v-for="m of actionItem.children">
-                <span>{{m.name}}</span>
-            </template>
+            <h3 class="title">{{actionItem.name}}</h3>
+            <div class="submenuMain">
+                <template v-for="m of actionItem.children">
+                    <span>{{m.name}}</span>
+                </template>
+            </div>
         </div>
     </div>
 </template>
@@ -51,7 +54,8 @@
             },
             // 是否显示子菜单
             showSubmenu: function () {
-                return (this.mouseMoveMenuItem || this.mouseMoveSubmenu)
+                // return (this.mouseMoveMenuItem || this.mouseMoveSubmenu)
+                return true
             }
         },
         created() {
@@ -66,43 +70,47 @@
             getSubmenuPosition(event) {
                 this.submenuStyle = {
                     top: `${event.currentTarget.offsetTop}px`,
-                    left: `${event.currentTarget.offsetWidth}px`,
+                    left: `${event.currentTarget.offsetWidth + 5}px`,
                     display: 'block'
                 };
             },
             // 鼠标移入一级菜单
             menuItemMove() {
                 const vm = this;
-                setTimeout(() => {
-                    vm.mouseMoveMenuItem = true;
-                }, 100);
+                vm.mouseMoveMenuItem = true;
+                /*setTimeout(() => {
+
+                }, 100);*/
             },
             // 鼠标移出一级菜单
             menuItemLeave() {
                 const vm = this;
-                setTimeout(() => {
-                    vm.mouseMoveMenuItem = false;
-                    if (!this.mouseMoveSubmenu) {
-                        this.submenuStyle['display'] = 'none';
-                    }
-                }, 100);
+                vm.mouseMoveMenuItem = false;
+                if (!this.mouseMoveSubmenu) {
+                    // this.submenuStyle['display'] = 'none';
+                }
+                /*setTimeout(() => {
+
+                }, 100);*/
             },
             // 鼠标移入子级菜单
             subMove() {
                 const vm = this;
-                setTimeout(() => {
-                    vm.mouseMoveSubmenu = true;
-                }, 100);
+                vm.mouseMoveSubmenu = true;
+                /*setTimeout(() => {
+
+                }, 100);*/
             },
             // 鼠标移出子级菜单
             subLeave() {
                 const vm = this;
-                setTimeout(() => {
-                    vm.mouseMoveSubmenu = false;
-                    if (!this.mouseMoveMenuItem) {
-                        this.submenuStyle['display'] = 'none';
-                    }
-                }, 100);
+                vm.mouseMoveSubmenu = false;
+                if (!this.mouseMoveMenuItem) {
+                    // this.submenuStyle['display'] = 'none';
+                }
+                /*setTimeout(() => {
+
+                }, 100);*/
             }
         },
         mounted() {
