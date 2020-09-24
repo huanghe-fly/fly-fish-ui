@@ -14,7 +14,8 @@
                 </li>
             </template>
         </ul>
-        <div class="submenu" v-if="showSubmenu"
+        <div class="submenu" v-show="showSubmenu"
+             ref="submenu"
              :style="submenuStyle"
              @mousemove="subMove"
              @mouseleave="subLeave">
@@ -66,12 +67,21 @@
             },
             // 获取子菜单位置
             getSubmenuPosition(event) {
+                const bodyHeight = document.documentElement.clientHeight; // body高度
+                const liTop = event.currentTarget.offsetTop; // 点击的菜单距离顶部高度
                 this.submenuStyle = {
                     top: `${event.currentTarget.offsetTop}px`,
                     left: `${event.currentTarget.offsetWidth + 5}px`,
                     display: 'block'
                 };
                 this.mouseMoveMenuItem = true;
+                this.$nextTick(() => {
+                    // 2：二级菜单的边框  5: 二级菜单距离最底部的距离
+                    const submenuHeight = this.$refs.submenu.clientHeight + 2;
+                    if (liTop + submenuHeight + 5 > bodyHeight) {
+                        this.submenuStyle.top = `${bodyHeight - submenuHeight - 5}px`
+                    }
+                })
             },
             // 鼠标移出一级菜单
             menuItemLeave() {
