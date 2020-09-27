@@ -243,7 +243,7 @@
         }
     ];
     const data = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 2000; i++) {
         data.push({
             key: i,
             name: '20180229001111',

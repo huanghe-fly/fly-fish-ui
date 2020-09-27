@@ -22,7 +22,7 @@
             <h3 class="title">{{actionItem.name}}</h3>
             <div class="submenuMain">
                 <template v-for="m of actionItem.children">
-                    <span>{{m.name}}</span>
+                    <span @click="jumpLink(m)">{{m.name}}</span>
                 </template>
             </div>
         </div>
@@ -107,6 +107,11 @@
                         this.submenuStyle['display'] = 'none';
                     }
                 }, 200);
+            },
+            // 单机跳转链接
+            jumpLink(submenu) {
+                this.$router.push(submenu.path);
+                this.mouseMoveSubmenu = false;
             }
         },
         mounted() {

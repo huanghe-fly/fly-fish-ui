@@ -17,6 +17,48 @@ const routes = [
         component: function () {
             return import('../views/base-component')
         }
+    },
+    {
+        path: '/input',
+        name: 'Input',
+        component: function () {
+            return import('../views/baseComponents/inputDemo')
+        }
+    },
+    {
+        path: '/button',
+        name: 'Button',
+        component: function () {
+            return import('../views/baseComponents/inputDemo')
+        }
+    },
+    {
+        path: '/pagination',
+        name: 'Pagination',
+        component: function () {
+            return import('../views/baseComponents/paginationDemo')
+        }
+    },
+    {
+        path: '/picker',
+        name: 'Picker',
+        component: function () {
+            return import('../views/baseComponents/pickerDemo')
+        }
+    },
+    {
+        path: '/select',
+        name: 'Select',
+        component: function () {
+            return import('../views/baseComponents/selectDemo')
+        }
+    },
+    {
+        path: '/table',
+        name: 'Table',
+        component: function () {
+            return import('../views/baseComponents/tableDemo')
+        }
     }
 ];
 

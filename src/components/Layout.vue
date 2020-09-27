@@ -3,7 +3,10 @@
 -->
 <template>
     <div class="layout">
-        <div class="header">Header</div>
+        <div class="header">
+            <div class="menu-bar"><i class="fa fa-navicon"></i></div>
+            <div></div>
+        </div>
         <div class="container">
             <div class="aside">
                 <FlyMenu :menus="menus"/>
@@ -34,19 +37,19 @@
             this.menus = [
                 {
                     name: '基础组件',
-                    icon: '',
+                    icon: 'fa fa-gear',
                     children: [
-                        {name: '输入框', path: ''},
-                        {name: '选择框', path: ''},
-                        {name: '按钮', path: ''},
-                        {name: '表格', path: ''},
-                        {name: '分页', path: ''},
-                        {name: '日期选择', path: ''}
+                        {name: '输入框', path: '/input'},
+                        {name: '选择框', path: '/select'},
+                        {name: '按钮', path: '/button'},
+                        {name: '表格', path: '/table'},
+                        {name: '分页', path: '/pagination'},
+                        {name: '日期选择', path: '/picker'}
                     ]
                 },
                 {
                     name: '拓展组件',
-                    icon: '',
+                    icon: 'fa fa-gear',
                     children: [
                         {name: '表单', path: ''},
                         {name: '列表', path: ''},
