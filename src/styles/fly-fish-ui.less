@@ -203,14 +203,16 @@
     width: 100%;
     height: 100%;
     position: relative;
-    padding-top: 32px;
     box-sizing: border-box;
     table {
         min-width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 0;
         box-sizing: border-box;
-        border-right:1px solid #ccc;
-        border-bottom:1px solid #ccc;
+        table-layout: fixed;
         th, td {
+            height: 32px;
             box-sizing: border-box;
             border-left:1px solid #ccc;
             border-top:1px solid #ccc;
@@ -218,6 +220,14 @@
             font-size: 14px;
             color: #666;
             font-weight: 400;
+            span {
+                display: block;
+                width: 100%;
+                height: 19px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
         th {
             background: #eaeaea;
@@ -229,76 +239,100 @@
         top: 0;
         right: 0;
         background: #e1e1e1;
+        border: 1px solid #ccc;
+        border-left: 0;
     }
-    .fly-table-header {
-        width: 100%;
-        height: 32px;
-        box-sizing: border-box;
-        overflow: hidden;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-    }
-    .fly-table-body {
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        box-sizing: border-box;
+    .fly-table-content {
+        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        .fly-table-header {
+            width: 100%;
+            height: 32px;
+            min-height: 32px;
+            box-sizing: border-box;
+            overflow: hidden;
+            border: 1px solid #ccc;
+        }
+        .fly-table-body {
+            width: 100%;
+            flex: 1;
+            height: 0;
+            overflow: auto;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-top: 0;
+        }
     }
     .fly-table-fixed-left {
-        height: 100%;
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
         overflow: hidden;
         box-sizing: border-box;
         position: absolute;
         top: 0;
         left: 0;
-        padding-top: 32px;
         background-color: #fff;
         z-index: 3;
         .fly-table-fixed-header {
             width: 100%;
             height: 32px;
+            min-height: 32px;
             overflow: hidden;
             box-sizing: border-box;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
+            border: 1px solid #ccc;
         }
         .fly-table-fixed-body {
             width: 100%;
             height: 100%;
             box-sizing: border-box;
             overflow: hidden;
+            border: 1px solid #ccc;
+            border-top: 0;
+            border-bottom: 0;
         }
     }
     .fly-table-fixed-right {
-        height: 100%;
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
         overflow: hidden;
         box-sizing: border-box;
         position: absolute;
         top: 0;
         right: 0;
-        padding-top: 32px;
         background-color: #fff;
         z-index: 3;
         .fly-table-fixed-header {
             width: 100%;
             height: 32px;
+            min-height: 32px;
             overflow: hidden;
             box-sizing: border-box;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
+            border: 1px solid #ccc;
         }
         .fly-table-fixed-body {
             width: 100%;
             height: 100%;
             box-sizing: border-box;
             overflow: hidden;
+            border: 1px solid #ccc;
+            border-top: 0;
+            border-bottom: 0;
         }
+    }
+    .fly-table-header tr:first-child th, .fly-table-body tr:first-child td,
+    .fly-table-fixed-header tr:first-child th, .fly-table-fixed-body tr:first-child td {
+        border-top: 1px solid transparent;
+    }
+    .fly-table-header tr th:first-child, .fly-table-body tr td:first-child,
+    .fly-table-fixed-header tr th:first-child, .fly-table-fixed-body tr td:first-child {
+        border-left: 0;
+    }
+    .fly-table-header tr th:last-child, .fly-table-body tr td:last-child,
+    .fly-table-fixed-header tr th:first-child, .fly-table-fixed-body tr td:first-child {
+        border-right: 0;
     }
 }
 .fly-pagination {

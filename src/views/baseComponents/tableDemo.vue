@@ -2,8 +2,8 @@
 @author huangHe
 -->
 <template>
-    <div style="height: 300px">
-        <fly-table :data="data">
+    <div style="height: 500px">
+        <fly-table v-if="data.length > 0" v-bind:data="data">
             <fly-table-column v-for="column in tableColumns" :key="column.key"
                               :title="column.title" :data-index="column.dataIndex" :width="column.width"
                               :fixed="column.fixed" :header-align="column.align"
@@ -99,7 +99,7 @@
                         search: false,
                         searchType: 'input'
                     },
-                    {
+                    /*{
                         title: '预算项目',
                         dataIndex: 'address',
                         key: '6',
@@ -198,7 +198,7 @@
                         display: true,
                         search: false,
                         searchType: 'time'
-                    },
+                    },*/
                     {
                         title: '审核人',
                         dataIndex: 'address',
@@ -219,7 +219,7 @@
         methods: {},
         mounted() {
             this.data = [];
-            for (let i = 0; i < 2000; i++) {
+            for (let i = 0; i < 50; i++) {
                 this.data.push({
                     key: i,
                     name: '20180229001111',

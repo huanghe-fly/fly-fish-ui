@@ -14,7 +14,7 @@
                 </li>
             </template>
         </ul>
-        <div class="submenu" v-show="showSubmenu"
+        <div class="submenu" v-show="showSubmenu" v-if="actionItem"
              ref="submenu"
              :style="submenuStyle"
              @mousemove="subMove"
