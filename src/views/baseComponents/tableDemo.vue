@@ -3,7 +3,7 @@
 -->
 <template>
     <div style="height: 500px">
-        <fly-table v-if="data.length > 0" v-bind:data="data">
+        <fly-table v-if="data.length > 0" v-bind:dataSource="data">
             <fly-table-column v-for="column in tableColumns" :key="column.key"
                               :title="column.title" :data-index="column.dataIndex" :width="column.width"
                               :fixed="column.fixed" :header-align="column.align"
@@ -99,7 +99,7 @@
                         search: false,
                         searchType: 'input'
                     },
-                    /*{
+                    {
                         title: '预算项目',
                         dataIndex: 'address',
                         key: '6',
@@ -198,7 +198,7 @@
                         display: true,
                         search: false,
                         searchType: 'time'
-                    },*/
+                    },
                     {
                         title: '审核人',
                         dataIndex: 'address',
