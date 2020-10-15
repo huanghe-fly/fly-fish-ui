@@ -27,8 +27,8 @@
                 </table>
             </div>
             <div class="fly-table-body">
-                <div :style="{'height': `${tableHeight}px`, 'paddingTop': `${tablePaddingTop}px`}">
-                    <table :width="totalWidth">
+                <div :style="{'height': `${tableHeight}px`, 'width': `${totalWidth}px`, 'paddingTop': `${tablePaddingTop}px`}">
+                    <table v-if="dataSource.length > 0" :width="totalWidth">
                         <tbody>
                         <tr v-for="(item, index) in readerData"
                             :class="[hoverIndex === index ? 'hover-row' : '', getSelectedStatus(item) ? 'selected-row' : '']"
@@ -46,8 +46,10 @@
                         </tr>
                         </tbody>
                     </table>
+                    <div class="fly-table-empty-block" :style="{width: totalWidth+'px'}" v-if="dataSource.length === 0"></div>
                 </div>
             </div>
+            <div class="fly-table-empty-no-date" v-if="dataSource.length === 0">暂无数据</div>
         </div>
         <div :class="['fly-table-fixed-left', scrollLeftOrRight === 'left'? '':'scrolling-left']" :style="{'width': fixedLeftWidth + 'px'}">
             <div class="fly-table-fixed-header">
@@ -68,7 +70,7 @@
             </div>
             <div class="fly-table-fixed-body">
                 <div class="" :style="{'height': `${tableHeight}px`, 'paddingTop': `${tablePaddingTop}px`}">
-                    <table :width="fixedLeftWidth">
+                    <table :width="fixedLeftWidth" v-if="dataSource.length > 0">
                         <tbody>
                         <tr v-for="(item, index) in readerData"
                             :class="[hoverIndex === index ? 'hover-row' : '', getSelectedStatus(item) ? 'selected-row' : '']"
@@ -86,6 +88,7 @@
                         </tr>
                         </tbody>
                     </table>
+                    <div class="fly-table-empty-block" :style="{width: fixedLeftWidth+'px'}" v-if="dataSource.length === 0"></div>
                 </div>
             </div>
         </div>
@@ -105,7 +108,7 @@
             </div>
             <div class="fly-table-fixed-body">
                 <div class="" :style="{'height': `${tableHeight}px`, 'paddingTop': `${tablePaddingTop}px`}">
-                    <table :width="fixedRightWidth">
+                    <table :width="fixedRightWidth" v-if="dataSource.length > 0">
                         <tbody>
                         <tr v-for="(item, index) in readerData"
                             :class="[hoverIndex === index ? 'hover-row' : '', getSelectedStatus(item) ? 'selected-row' : '']"
@@ -120,6 +123,7 @@
                         </tr>
                         </tbody>
                     </table>
+                    <div class="fly-table-empty-block" :style="{width: fixedRightWidth+'px'}" v-if="dataSource.length === 0"></div>
                 </div>
             </div>
         </div>
@@ -189,7 +193,11 @@
         computed: {
             // table的实际高度
             tableHeight: function () {
-                return this.dataSource.length * 32 - 1;
+                if (this.dataSource.length > 0) {
+                    return this.dataSource.length * 32;
+                } else {
+                    return 'auto';
+                }
             },
             // 表头复选框样式
             headerCheckboxClass: function () {
@@ -222,13 +230,14 @@
                     this.totalWidth = this.totalWidth + parseFloat(item.width);
                     if (item.fixed && item.fixed === 'left') {
                         this.fixedLeftColumns.push(item);
-                        this.fixedLeftWidth = this.fixedLeftWidth + parseFloat(item.width) + 2;
+                        this.fixedLeftWidth = this.fixedLeftWidth + parseFloat(item.width) + 1;
                     }
                     if (item.fixed && item.fixed === 'right') {
                         this.fixedRightColumns.push(item);
-                        this.fixedRightWidth = this.fixedRightWidth + parseFloat(item.width) + 2;
+                        this.fixedRightWidth = this.fixedRightWidth + parseFloat(item.width) + 1;
                     }
                 });
+                this.totalWidth += 50;
                 this.tableDom = document.getElementById(this.tableId);
                 this.tableHeaderDom = this.tableDom.querySelector(".fly-table-header");
                 this.tableBodyDom = this.tableDom.querySelector(".fly-table-body");
@@ -239,13 +248,14 @@
                     fixedLeft.forEach(item => {
                         this.fixedLeftWidth = this.fixedLeftWidth + item.offsetWidth;
                     });
-                    this.fixedLeftWidth = this.fixedLeftWidth + 2 + 50;
+                    // 左侧固定加一个边线和checkbox
+                    this.fixedLeftWidth = this.fixedLeftWidth + 1 + 50;
                     const fixedRight = [...this.tableHeaderDom.querySelectorAll(".table-fixed-right")];
                     this.fixedRightWidth = 0;
                     fixedRight.forEach(item => {
                         this.fixedRightWidth = this.fixedRightWidth + item.offsetWidth;
                     });
-                    this.fixedRightWidth = this.fixedRightWidth + 2;
+                    // this.fixedRightWidth = this.fixedRightWidth + 1;
                 })
             },
             // 监听滚动条，实现同步滚动, 计算滚动条宽度
@@ -292,12 +302,12 @@
             },
             // 获取table表格当前需要渲染的数据，设置table的偏移量
             getTableReaderData() {
+                // 获取最大高度可以放多少行
                 let startIndex = Math.floor(this.tableBodyDom.scrollTop / 32);
-                const pageNum = Math.ceil(this.tableBodyDom.clientHeight / 32);
+                const pageNum = Math.ceil(this.tableDom.clientHeight / 32);
                 let allData = JSON.parse(JSON.stringify(this.dataSource));
                 this.tablePaddingTop = startIndex * 32;
                 this.readerData = allData.slice(startIndex, startIndex + pageNum);
-                console.log(this.readerData)
             },
             // 鼠标移入
             mousemove(index) {

@@ -3,7 +3,7 @@
 -->
 <template>
     <div style="height: 500px">
-        <fly-table v-if="data.length > 0" v-bind:dataSource="data">
+        <fly-table v-bind:dataSource="data">
             <fly-table-column v-for="column in tableColumns" :key="column.key"
                               :title="column.title" :data-index="column.dataIndex" :width="column.width"
                               :fixed="column.fixed" :header-align="column.align"
