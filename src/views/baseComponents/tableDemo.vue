@@ -3,15 +3,19 @@
 -->
 <template>
     <div style="height: 500px">
-        <fly-table v-bind:dataSource="data" :rowHeight="43">
-            <fly-table-column fixed type="selection" header-align="center" align="center" width="50"> </fly-table-column>
-            <fly-table-column fixed type="index" header-align="center" align="center" width="50"> </fly-table-column>
+        <fly-table :dataSource="data" :rowHeight="43" @selectionChange="selectionChange">
+            <fly-table-column fixed type="selection" header-align="center" align="center" width="50"></fly-table-column>
+            <fly-table-column fixed type="index" header-align="center" align="center" width="50">
+                <template slot="header" slot-scope="scope">
+                    ##
+                </template>
+            </fly-table-column>
             <fly-table-column v-for="column in tableColumns" :key="column.key"
                               :title="column.title" :data-index="column.dataIndex" :width="column.width"
                               :fixed="column.fixed" :header-align="column.align"
                               :align="column.align">
                 <template slot-scope="scope">
-                    <fly-input v-model="scope.row[column.dataIndex]"></fly-input>
+                    <fly-input v-model="data[scope.index][column.dataIndex]"></fly-input>
                 </template>
             </fly-table-column>
             <!--<fly-table-column title="单据编号" dataIndex="name" width="150">
@@ -223,7 +227,15 @@
         },
         created() {
         },
-        methods: {},
+        methods: {
+            selectionChange(items) {
+                console.log(items)
+            },
+            change(data) {
+                console.log(data)
+                console.log(this.data[0])
+            }
+        },
         mounted() {
             this.data = [];
             for (let i = 0; i < 50; i++) {

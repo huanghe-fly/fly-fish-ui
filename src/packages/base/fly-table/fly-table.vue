@@ -65,7 +65,7 @@
                                 <template v-else-if="column.type === 'index'">
                                     <td :width="column.width" :align="column.align">
                                         <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                                    :columns="item"></table-body>
+                                                    :row="item"></table-body>
                                         <span v-if="!column.bodySlots">{{item.index}}</span>
                                     </td>
                                 </template>
@@ -73,7 +73,7 @@
                                     <td :width="column.width" :align="column.align">
                                         <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
                                             <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                                        :columns="item"></table-body>
+                                                        :row="item"></table-body>
                                             <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
                                         </span>
                                     </td>
@@ -145,7 +145,7 @@
                                 <template v-else-if="column.type === 'index'">
                                     <td :width="column.width" :align="column.align">
                                         <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                                    :columns="item"></table-body>
+                                                    :row="item"></table-body>
                                         <span v-if="!column.bodySlots">{{item.index}}</span>
                                     </td>
                                 </template>
@@ -153,7 +153,7 @@
                                     <td :width="column.width" :align="column.align">
                                         <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
                                             <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                                        :columns="item"></table-body>
+                                                        :row="item"></table-body>
                                             <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
                                         </span>
                                     </td>
@@ -202,7 +202,7 @@
                             <td v-for="column in fixedRightColumns" :width="column.width" :align="column.align">
                                 <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
                                     <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                                :columns="item"></table-body>
+                                                :row="item"></table-body>
                                     <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
                                 </span>
                             </td>
@@ -231,10 +231,14 @@
     });
     // 定义table-body组件，接收显示 默认的slots
     Vue.component("table-body", {
-        props: ['scopedSlots', 'columns'],
+        props: ['scopedSlots', 'row'],
         render: function (createElement) {
+            const rowData = JSON.parse(JSON.stringify(this.row));
+            const rowIndex = this.row.index - 1;
+            delete rowData.index;
             return createElement("span", this.scopedSlots.default({
-                row: this.columns
+                row: rowData,
+                index: rowIndex
             }));
         }
     });
@@ -426,6 +430,7 @@
                 } else {
                     this.selectedRows = [];
                 }
+                this.$emit('selectionChange', this.selectedRows);
             },
             // 点击行选中数据
             clickRow(item) {
@@ -439,6 +444,7 @@
                 } else {
                     this.selectedRows = [item];
                 }
+                this.$emit('selectionChange', this.selectedRows);
             },
             // 判断选中的状态(行内)
             getSelectedStatus(item) {
