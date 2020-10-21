@@ -261,18 +261,17 @@
         box-sizing: border-box;
         table-layout: fixed;
         th, td {
-            height: 32px;
             box-sizing: border-box;
             border-left:1px solid #ccc;
             border-top:1px solid #ccc;
-            padding: 6px 5px;
             font-size: 14px;
             color: #666;
             font-weight: 400;
+            span.tdWrapper {
+                padding: 6px 5px;
+            }
             span {
                 display: block;
-                width: 100%;
-                height: 19px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -283,7 +282,39 @@
             }
         }
         th {
+            height: 36px;
+            padding: 6px 5px;
             background: #eaeaea;
+            position: relative;
+            &.table-sort-wrapper {
+                padding-right: 18px;
+            }
+            .table-sort {
+                width: 8px;
+                height: 14px;
+                position: absolute;
+                top: 50%;
+                right: 4px;
+                margin-top: -9px;
+                cursor: pointer;
+                .table-sort-up {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    height: 7px;
+                    overflow: hidden;
+                }
+                .table-sort-down {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    height: 7px;
+                    overflow: hidden;
+                }
+                .actionSort {
+                    color: #0066ff;
+                }
+            }
         }
         .hover-row {
             background-color: #cce0ff;
@@ -293,7 +324,7 @@
         }
     }
     .scrollMask {
-        height: 32px;
+        height: 36px;
         position: absolute;
         top: 0;
         right: 0;
@@ -308,11 +339,12 @@
         position: relative;
         .fly-table-header {
             width: 100%;
-            height: 32px;
-            min-height: 32px;
+            height: 36px;
+            min-height: 36px;
             box-sizing: border-box;
             overflow: hidden;
             border: 1px solid #ccc;
+            border-bottom-width: 2px;
         }
         .fly-table-body {
             width: 100%;
@@ -337,12 +369,13 @@
         z-index: 3;
         .fly-table-fixed-header {
             width: 100%;
-            height: 32px;
-            min-height: 32px;
+            height: 36px;
+            min-height: 36px;
             overflow: hidden;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-right: 0;
+            border-bottom-width: 2px;
         }
         .fly-table-fixed-body {
             width: 100%;
@@ -374,12 +407,13 @@
         z-index: 3;
         .fly-table-fixed-header {
             width: 100%;
-            height: 32px;
-            min-height: 32px;
+            height: 36px;
+            min-height: 36px;
             overflow: hidden;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-left: 0;
+            border-bottom-width: 2px;
         }
         .fly-table-fixed-body {
             width: 100%;
@@ -400,15 +434,15 @@
     }
     .fly-table-header tr:first-child th, .fly-table-body tr:first-child td,
     .fly-table-fixed-header tr:first-child th, .fly-table-fixed-body tr:first-child td {
-        border-top: 1px solid transparent;
+        border-top: 0;
     }
     .fly-table-header tr th:first-child, .fly-table-body tr td:first-child,
     .fly-table-fixed-header tr th:first-child, .fly-table-fixed-body tr td:first-child {
-        border-left: 1px solid transparent;
+        border-left: 0;
     }
     .fly-table-header tr th:last-child, .fly-table-body tr td:last-child,
     .fly-table-fixed-header tr th:last-child, .fly-table-fixed-body tr td:last-child {
-        border-right: 1px solid transparent;
+        border-right: 0;
     }
     .fly-table-empty-block {
         text-align: center;
@@ -416,7 +450,7 @@
     }
     .fly-table-empty-no-date {
         position: absolute;
-        top: 32px;
+        top: 36px;
         left: 0;
         width: 100%;
         height: 200px;

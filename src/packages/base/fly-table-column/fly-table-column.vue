@@ -24,6 +24,9 @@
             },
             align: {
                 type: String, default: 'center'
+            },
+            type: {
+                type: String, default: 'normal'
             }
         },
         data() {
@@ -42,6 +45,7 @@
                 fixed: this.fixed === true ? 'left':this.fixed,
                 headerAlign: this.headerAlign,
                 align: this.align,
+                type: this.type,
                 headerSlots: null,
                 bodySlots: null
             };

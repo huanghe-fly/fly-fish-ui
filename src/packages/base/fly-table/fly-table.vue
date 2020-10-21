@@ -13,15 +13,36 @@
                 <table :width="totalWidth">
                     <thead>
                     <tr>
-                        <th width="50" align="center">
-                            <span :class="['fly-checkbox', headerCheckboxClass]" @click="selectAll"></span>
-                        </th>
-                        <th v-for="(column) in tableColumns" :width="column.width" :align="column.headerAlign"
-                            :class="column.fixed ? `table-fixed-${column.fixed}` : ''">
-                            <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
-                                          :columns="column"></table-header>
-                            <span v-if="!column.headerSlots">{{column.title}}</span>
-                        </th>
+                        <template v-for="(column, index) in tableColumns">
+                            <template v-if="column.type === 'selection'">
+                                <th :width="column.width" :align="column.headerAlign" class="table-fixed-left">
+                                    <span :class="['fly-checkbox', headerCheckboxClass]" @click="selectAll"></span>
+                                </th>
+                            </template>
+                            <template v-else-if="column.type === 'index'">
+                                <th :width="column.width" :align="column.headerAlign" class="table-fixed-left">
+                                    <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
+                                                  :columns="column"></table-header>
+                                    <span v-if="!column.headerSlots">#</span>
+                                </th>
+                            </template>
+                            <template v-else>
+                                <th :width="column.width" :align="column.headerAlign"
+                                    :class="[column.fixed ? `table-fixed-${column.fixed}` : '', sort ? 'table-sort-wrapper': '']">
+                                    <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
+                                                  :columns="column"></table-header>
+                                    <span v-if="!column.headerSlots">{{column.title}}</span>
+                                    <span v-if="sort" class="table-sort">
+                                        <i class="table-sort-up fa fa-sort-up"
+                                           :class="actionSortIcon === `${index}-1`? 'actionSort':''"
+                                           @click="tableSort(column, 'up', `${index}-1`)"></i>
+                                        <i class="table-sort-down fa fa-sort-up fa-rotate-180"
+                                           :class="actionSortIcon === `${index}-2`? 'actionSort':''"
+                                           @click="tableSort(column, 'down', `${index}-2`)"></i>
+                                    </span>
+                                </th>
+                            </template>
+                        </template>
                     </tr>
                     </thead>
                 </table>
@@ -35,14 +56,29 @@
                             @mousemove="mousemove(index)"
                             @mouseleave="mouseleave(index)"
                             @click="clickRow(item)">
-                            <td width="50" align="center">
-                                <span class="fly-checkbox" :class="getSelectedStatus(item) ? 'is-checked' : ''"></span>
-                            </td>
-                            <td v-for="column in tableColumns" :width="column.width" :align="column.align">
-                                <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                            :columns="item"></table-body>
-                                <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
-                            </td>
+                            <template v-for="(column, i) in tableColumns">
+                                <template v-if="column.type === 'selection'">
+                                    <td :width="column.width" :align="column.align" :style="{'height': `${rowHeight}px`}">
+                                        <span class="fly-checkbox" :class="getSelectedStatus(item) ? 'is-checked' : ''"></span>
+                                    </td>
+                                </template>
+                                <template v-else-if="column.type === 'index'">
+                                    <td :width="column.width" :align="column.align">
+                                        <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
+                                                    :columns="item"></table-body>
+                                        <span v-if="!column.bodySlots">{{item.index}}</span>
+                                    </td>
+                                </template>
+                                <template v-else>
+                                    <td :width="column.width" :align="column.align">
+                                        <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
+                                            <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
+                                                        :columns="item"></table-body>
+                                            <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
+                                        </span>
+                                    </td>
+                                </template>
+                            </template>
                         </tr>
                         </tbody>
                     </table>
@@ -51,19 +87,42 @@
             </div>
             <div class="fly-table-empty-no-date" v-if="dataSource.length === 0">暂无数据</div>
         </div>
-        <div :class="['fly-table-fixed-left', scrollLeftOrRight === 'left'? '':'scrolling-left']" :style="{'width': fixedLeftWidth + 'px'}">
+        <div v-if="fixedLeftColumns.findIndex(i => i.fixed === 'left') > -1"
+             :class="['fly-table-fixed-left', scrollLeftOrRight === 'left'? '':'scrolling-left']"
+             :style="{'width': fixedLeftWidth + 'px'}">
             <div class="fly-table-fixed-header">
                 <table :width="fixedLeftWidth">
                     <thead>
                     <tr>
-                        <th width="50" align="center">
-                            <span :class="['fly-checkbox', headerCheckboxClass]" @click="selectAll"></span>
-                        </th>
-                        <th v-for="(column) in fixedLeftColumns" :width="column.width" :align="column.headerAlign">
-                            <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
-                                          :columns="column"></table-header>
-                            <span v-if="!column.headerSlots">{{column.title}}</span>
-                        </th>
+                        <template v-for="(column, index) in fixedLeftColumns">
+                            <template v-if="column.type === 'selection'">
+                                <th :width="column.width" :align="column.align">
+                                    <span :class="['fly-checkbox', headerCheckboxClass]" @click="selectAll"></span>
+                                </th>
+                            </template>
+                            <template v-else-if="column.type === 'index'">
+                                <th :width="column.width" :align="column.align">
+                                    <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
+                                                  :columns="column"></table-header>
+                                    <span v-if="!column.headerSlots">#</span>
+                                </th>
+                            </template>
+                            <template v-else>
+                                <th :width="column.width" :align="column.headerAlign" :class="[sort ? 'table-sort-wrapper': '']">
+                                    <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
+                                                  :columns="column"></table-header>
+                                    <span v-if="!column.headerSlots">{{column.title}}</span>
+                                    <span v-if="sort" class="table-sort">
+                                        <i class="table-sort-up fa fa-sort-up"
+                                           :class="actionSortIcon === `${index}-1`? 'actionSort':''"
+                                           @click="tableSort(column, 'up', `${index}-1`)"></i>
+                                        <i class="table-sort-down fa fa-sort-up fa-rotate-180"
+                                           :class="actionSortIcon === `${index}-2`? 'actionSort':''"
+                                           @click="tableSort(column, 'down', `${index}-2`)"></i>
+                                    </span>
+                                </th>
+                            </template>
+                        </template>
                     </tr>
                     </thead>
                 </table>
@@ -77,14 +136,29 @@
                             @mousemove="mousemove(index)"
                             @mouseleave="mouseleave(index)"
                             @click="clickRow(item)">
-                            <td width="50" align="center">
-                                <span class="fly-checkbox" :class="getSelectedStatus(item) ? 'is-checked' : ''"></span>
-                            </td>
-                            <td v-for="column in fixedLeftColumns" :width="column.width" :align="column.align">
-                                <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                            :columns="item"></table-body>
-                                <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
-                            </td>
+                            <template v-for="(column, i) in fixedLeftColumns">
+                                <template v-if="column.type === 'selection'">
+                                    <td :width="column.width" :align="column.align" :style="{'height': `${rowHeight}px`}">
+                                        <span class="fly-checkbox" :class="getSelectedStatus(item) ? 'is-checked' : ''"></span>
+                                    </td>
+                                </template>
+                                <template v-else-if="column.type === 'index'">
+                                    <td :width="column.width" :align="column.align">
+                                        <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
+                                                    :columns="item"></table-body>
+                                        <span v-if="!column.bodySlots">{{item.index}}</span>
+                                    </td>
+                                </template>
+                                <template v-else>
+                                    <td :width="column.width" :align="column.align">
+                                        <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
+                                            <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
+                                                        :columns="item"></table-body>
+                                            <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
+                                        </span>
+                                    </td>
+                                </template>
+                            </template>
                         </tr>
                         </tbody>
                     </table>
@@ -92,15 +166,25 @@
                 </div>
             </div>
         </div>
-        <div :class="['fly-table-fixed-right', scrollLeftOrRight === 'right'? '':'scrolling-right']" :style="{'width': fixedRightWidth + 'px'}">
+        <div v-if="fixedRightColumns.findIndex(i => i.fixed === 'right') > -1"
+             :class="['fly-table-fixed-right', scrollLeftOrRight === 'right'? '':'scrolling-right']"
+             :style="{'width': fixedRightWidth + 'px'}">
             <div class="fly-table-fixed-header">
                 <table :width="fixedRightWidth">
                     <thead>
                     <tr>
-                        <th v-for="(column) in fixedRightColumns" :width="column.width" :align="column.headerAlign">
+                        <th v-for="(column, index) in fixedRightColumns" :width="column.width" :align="column.headerAlign" :class="[sort ? 'table-sort-wrapper': '']">
                             <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
                                           :columns="column"></table-header>
                             <span v-if="!column.headerSlots">{{column.title}}</span>
+                            <span v-if="sort" class="table-sort">
+                                <i class="table-sort-up fa fa-sort-up"
+                                   :class="actionSortIcon === `${index}-1`? 'actionSort':''"
+                                   @click="tableSort(column, 'up', `${index}-1`)"></i>
+                                <i class="table-sort-down fa fa-sort-up fa-rotate-180"
+                                   :class="actionSortIcon === `${index}-2`? 'actionSort':''"
+                                   @click="tableSort(column, 'down', `${index}-2`)"></i>
+                            </span>
                         </th>
                     </tr>
                     </thead>
@@ -116,9 +200,11 @@
                             @mouseleave="mouseleave(index)"
                             @click="clickRow(item)">
                             <td v-for="column in fixedRightColumns" :width="column.width" :align="column.align">
-                                <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                            :columns="item"></table-body>
-                                <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
+                                <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
+                                    <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
+                                                :columns="item"></table-body>
+                                    <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
+                                </span>
                             </td>
                         </tr>
                         </tbody>
@@ -166,6 +252,16 @@
             multiple: {
                 type: Boolean,
                 default: true
+            },
+            // 是否显示排序
+            sort: {
+                type: Boolean,
+                default: true
+            },
+            // 行高
+            rowHeight: {
+                type: Number,
+                default: 32
             }
         },
         data() {
@@ -174,7 +270,7 @@
                 tableDom: null,
                 tableHeaderDom: null,
                 tableBodyDom: null,
-                tableColumns: [], // table的columns
+                tableColumns: [], // table的columns 默认多选框和序号左侧固定
                 tableData: [], // table的数据
                 readerData: [], // table需要渲染的数据
                 totalWidth: 0, // 所有columns的总宽度
@@ -187,14 +283,17 @@
                 scrollLeftOrRight: 'left', // 横向滚动条是否滚动到最左或最右
                 hoverIndex: null, // 鼠标移入下标
                 selectedIndex: [], // 鼠标点击行下标
-                selectedRows: [] // 选中的数据
+                selectedRows: [], // 选中的数据
+                oldDataSource: [], // 保存排序之前的数据
+                actionSortIcon: '', // 排序按钮激活坐标x-y x:下标 y: 1-up 2-down
+                sortStatus: 'up' // 排序状态 up:升序 down:降序
             }
         },
         computed: {
             // table的实际高度
             tableHeight: function () {
                 if (this.dataSource.length > 0) {
-                    return this.dataSource.length * 32;
+                    return this.dataSource.length * this.rowHeight;
                 } else {
                     return 'auto';
                 }
@@ -228,16 +327,17 @@
                 this.fixedRightWidth = 0;
                 this.tableColumns.forEach((item, index) => {
                     this.totalWidth = this.totalWidth + parseFloat(item.width);
-                    if (item.fixed && item.fixed === 'left') {
+                    // 默认多选框和序号左侧固定
+                    if ((item.fixed && item.fixed === 'left') || item.type === 'selection' || item.type === 'index') {
                         this.fixedLeftColumns.push(item);
-                        this.fixedLeftWidth = this.fixedLeftWidth + parseFloat(item.width) + 1;
+                        this.fixedLeftWidth = this.fixedLeftWidth + parseFloat(item.width);
                     }
                     if (item.fixed && item.fixed === 'right') {
                         this.fixedRightColumns.push(item);
                         this.fixedRightWidth = this.fixedRightWidth + parseFloat(item.width) + 1;
                     }
                 });
-                this.totalWidth += 50;
+                this.totalWidth += 1;
                 this.tableDom = document.getElementById(this.tableId);
                 this.tableHeaderDom = this.tableDom.querySelector(".fly-table-header");
                 this.tableBodyDom = this.tableDom.querySelector(".fly-table-body");
@@ -248,14 +348,13 @@
                     fixedLeft.forEach(item => {
                         this.fixedLeftWidth = this.fixedLeftWidth + item.offsetWidth;
                     });
-                    // 左侧固定加一个边线和checkbox
-                    this.fixedLeftWidth = this.fixedLeftWidth + 1 + 50;
                     const fixedRight = [...this.tableHeaderDom.querySelectorAll(".table-fixed-right")];
                     this.fixedRightWidth = 0;
                     fixedRight.forEach(item => {
                         this.fixedRightWidth = this.fixedRightWidth + item.offsetWidth;
                     });
-                    // this.fixedRightWidth = this.fixedRightWidth + 1;
+                    // 表格初始化完成后再加入滚动监听事件
+                    this.listenerScroll();
                 })
             },
             // 监听滚动条，实现同步滚动, 计算滚动条宽度
@@ -289,25 +388,28 @@
                 const tableFixedLeft = tableDom.querySelector(".fly-table-fixed-left");
                 const tableFixedRight = tableDom.querySelector(".fly-table-fixed-right");
                 const scrollMask = tableDom.querySelector(".scrollMask");
-                if (scrollXWidth) {
+                if (scrollXWidth && tableFixedLeft) {
                     tableFixedLeft.style.maxHeight = 'calc(100% - ' + scrollXWidth + 'px)';
                     tableFixedRight.style.maxHeight = 'calc(100% - ' + scrollXWidth + 'px)';
                 }
-                if (scrollYWidth) {
+                if (scrollYWidth && tableFixedRight) {
                     scrollMask.style.width = scrollYWidth + 'px';
                     tableFixedRight.style.right = scrollYWidth + 'px';
                     tableHeader.style.width = 'calc(100% - ' + scrollYWidth + 'px)';
-
                 }
             },
             // 获取table表格当前需要渲染的数据，设置table的偏移量
             getTableReaderData() {
                 // 获取最大高度可以放多少行
-                let startIndex = Math.floor(this.tableBodyDom.scrollTop / 32);
-                const pageNum = Math.ceil(this.tableDom.clientHeight / 32);
+                let startIndex = Math.floor(this.tableBodyDom.scrollTop / this.rowHeight);
+                const pageNum = Math.ceil(this.tableDom.clientHeight / this.rowHeight);
                 let allData = JSON.parse(JSON.stringify(this.dataSource));
-                this.tablePaddingTop = startIndex * 32;
+                this.tablePaddingTop = startIndex * this.rowHeight;
                 this.readerData = allData.slice(startIndex, startIndex + pageNum);
+                this.readerData = this.readerData.map((item, index) => {
+                    item.index = startIndex + index + 1;
+                    return item;
+                })
             },
             // 鼠标移入
             mousemove(index) {
@@ -346,11 +448,41 @@
                 } else {
                     return false;
                 }
+            },
+            // 表格排序
+            tableSort(column, status, actionSortIcon) {
+                const regNumber = /^[0-9]+$/;
+                if (this.actionSortIcon !== actionSortIcon) {
+                    this.actionSortIcon = actionSortIcon;
+                } else {
+                    this.actionSortIcon = null;
+                }
+                if (this.sortStatus !== status) {
+                    this.sortStatus = status;
+                    this.dataSource.sort((a, b) => {
+                        if (status === 'up') {
+                            if (regNumber.test(a[column.dataIndex]) && regNumber.test(b[column.dataIndex])) {
+                                return a[column.dataIndex] - b[column.dataIndex]
+                            } else {
+                                return a[column.dataIndex].localeCompare(b[column.dataIndex], 'zh-CN')
+                            }
+                        } else if (status === 'down') {
+                            if (regNumber.test(a[column.dataIndex]) && regNumber.test(b[column.dataIndex])) {
+                                return b[column.dataIndex] - a[column.dataIndex]
+                            } else {
+                                return b[column.dataIndex].localeCompare(a[column.dataIndex], 'zh-CN')
+                            }
+                        }
+                    });
+                } else {
+                    this.sortStatus = null;
+                    this.dataSource = JSON.parse(JSON.stringify(this.oldDataSource));
+                }
+                this.getTableReaderData();
             }
         },
         mounted() {
             this.initTable();
-            this.listenerScroll();
             this.getTableReaderData();
             this.$nextTick(() => {
                 this.setTable();
@@ -360,12 +492,14 @@
             columns: {
                 handler(newV) {
                     this.initTable();
-                    this.listenerScroll();
                 },
                 deep: true
             },
             dataSource: {
                 handler(newV) {
+                    if (this.oldDataSource.length < 1) {
+                        this.oldDataSource = JSON.parse(JSON.stringify(newV));
+                    }
                     this.getTableReaderData();
                     this.$nextTick(() => {
                         this.setTable();
