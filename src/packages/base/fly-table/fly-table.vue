@@ -66,7 +66,7 @@
                                     <td :width="column.width" :align="column.align">
                                         <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
                                                     :row="item"></table-body>
-                                        <span v-if="!column.bodySlots">{{item.index}}</span>
+                                        <span v-if="!column.bodySlots">{{item._index}}</span>
                                     </td>
                                 </template>
                                 <template v-else>
@@ -146,7 +146,7 @@
                                     <td :width="column.width" :align="column.align">
                                         <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
                                                     :row="item"></table-body>
-                                        <span v-if="!column.bodySlots">{{item.index}}</span>
+                                        <span v-if="!column.bodySlots">{{item._index}}</span>
                                     </td>
                                 </template>
                                 <template v-else>
@@ -234,8 +234,8 @@
         props: ['scopedSlots', 'row'],
         render: function (createElement) {
             const rowData = JSON.parse(JSON.stringify(this.row));
-            const rowIndex = this.row.index - 1;
-            delete rowData.index;
+            const rowIndex = this.row._index - 1;
+            delete rowData._index;
             return createElement("span", this.scopedSlots.default({
                 row: rowData,
                 index: rowIndex
@@ -411,7 +411,7 @@
                 this.tablePaddingTop = startIndex * this.rowHeight;
                 this.readerData = allData.slice(startIndex, startIndex + pageNum);
                 this.readerData = this.readerData.map((item, index) => {
-                    item.index = startIndex + index + 1;
+                    item._index = startIndex + index + 1;
                     return item;
                 })
             },
@@ -434,21 +434,25 @@
             },
             // 点击行选中数据
             clickRow(item) {
-                let rowIndex = this.selectedRows.findIndex(i => JSON.stringify(i) === JSON.stringify(item));
+                const _item = JSON.parse(JSON.stringify(item));
+                delete _item._index;
+                let rowIndex = this.selectedRows.findIndex(i => JSON.stringify(i) === JSON.stringify(_item));
                 if (this.multiple) {
                     if (rowIndex > -1) {
                         this.selectedRows.splice(rowIndex, 1);
                     } else {
-                        this.selectedRows.push(item);
+                        this.selectedRows.push(_item);
                     }
                 } else {
-                    this.selectedRows = [item];
+                    this.selectedRows = [_item];
                 }
                 this.$emit('selectionChange', this.selectedRows);
             },
             // 判断选中的状态(行内)
             getSelectedStatus(item) {
-                let rowIndex = this.selectedRows.findIndex(i => JSON.stringify(i) === JSON.stringify(item));
+                const _item = JSON.parse(JSON.stringify(item));
+                delete _item._index;
+                let rowIndex = this.selectedRows.findIndex(i => JSON.stringify(i) === JSON.stringify(_item));
                 if (rowIndex > -1) {
                     return true;
                 } else {

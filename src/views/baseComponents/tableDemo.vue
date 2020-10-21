@@ -15,7 +15,7 @@
                               :fixed="column.fixed" :header-align="column.align"
                               :align="column.align">
                 <template slot-scope="scope">
-                    <fly-input v-model="data[scope.index][column.dataIndex]"></fly-input>
+                    <fly-input v-model="data[scope.index][column.dataIndex]" @change="change"></fly-input>
                 </template>
             </fly-table-column>
             <!--<fly-table-column title="单据编号" dataIndex="name" width="150">
