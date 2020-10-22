@@ -29,7 +29,7 @@ const routes = [
         path: '/button',
         name: 'Button',
         component: function () {
-            return import('../views/baseComponents/inputDemo')
+            return import('../views/baseComponents/buttonDemo')
         }
     },
     {
@@ -65,6 +65,13 @@ const routes = [
         name: 'Form',
         component: function () {
             return import('../views/extensionComponents/formDemo')
+        }
+    },
+    {
+        path: '/searchGroups',
+        name: 'SearchGroups',
+        component: function () {
+            return import('../views/extensionComponents/searchGroupsDemo')
         }
     },
     {

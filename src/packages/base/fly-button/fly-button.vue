@@ -4,7 +4,7 @@
 <template>
     <button class="fly-button"
             :class="{'fly-button-default': !primary, 'fly-disabled': disabled, 'fly-button-primary': primary}"
-            disabled="disabled">
+            :disabled="disabled" @click="click($event)">
         {{label}}
     </button>
 </template>
@@ -21,7 +21,11 @@
         data() {
             return {}
         },
-        methods: {},
+        methods: {
+            click(e) {
+                this.$emit('click', e)
+            }
+        },
         mounted() {
         }
     }

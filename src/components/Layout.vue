@@ -52,6 +52,7 @@
                     icon: 'fa fa-gear',
                     children: [
                         {name: '表单', path: '/form'},
+                        {name: '查询', path: '/searchGroups'},
                         {name: '列表', path: '/tableList'},
                         {name: '详情', path: '/billDetail'}
                     ]

@@ -7,7 +7,7 @@
             <fly-table-column fixed type="selection" header-align="center" align="center" width="50"></fly-table-column>
             <fly-table-column fixed type="index" header-align="center" align="center" width="50">
                 <template slot="header" slot-scope="scope">
-                    ##
+                    <i class="fa fa-bars"></i>
                 </template>
             </fly-table-column>
             <fly-table-column v-for="column in tableColumns" :key="column.key"

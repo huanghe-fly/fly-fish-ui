@@ -5,8 +5,8 @@
     cursor: pointer;
     background-color: #fff;
     padding: 0 15px;
-    height: 30px;
-    line-height: 30px;
+    height: 32px;
+    line-height: 32px;
     min-width: 30px;
     &.fly-button-default{
         &:hover{
@@ -16,11 +16,11 @@
     }
     &.fly-button-primary{
         color: #fff;
-        background-color: #409eff;
-        border-color: #409eff;
+        background-color: #06f;
+        border-color: #06f;
         &:hover {
-            background: #66b1ff;
-            border-color: #66b1ff;
+            background: #3384ff;
+            border-color: #06f;
             color: #fff;
         }
     }
@@ -53,7 +53,7 @@
     position: relative;
     input {
         width: 100%;
-        height: 30px;
+        height: 32px;
         padding: 0 5px;
         display: block;
     }
@@ -122,7 +122,7 @@
     input {
         cursor: pointer;
         width: 100%;
-        height: 30px;
+        height: 32px;
         padding: 0 5px;
         display: block;
     }
@@ -570,6 +570,54 @@
             span:hover {
 
                 color: #06f;
+            }
+        }
+    }
+}
+
+.fly-search-groups {
+    width: 100%;
+    display: flex;
+    .search-groups-wrapper {
+        flex: 1;
+        ul {
+            li {
+                float: left;
+                display: flex;
+                margin-bottom: 16px;
+                .search-item-label {
+                    width: 130px;
+                    height: 32px;
+                    line-height: 32px;
+                    text-align: right;
+                }
+                .search-item-value {
+                    width: 200px;
+                }
+            }
+            &:after {
+                content: '';
+                display: block;
+                clear: both;
+            }
+        }
+
+    }
+    .search-button-wrapper {
+        .search-button {
+            .search-trigger {
+                margin-right: 4px;
+                cursor: pointer;
+                i {
+                    margin-left: 3px;
+                }
+            }
+            .search, .reset {
+                margin: 0 4px;
+            }
+            .search-setting {
+                margin-left: 4px;
+                cursor: pointer;
             }
         }
     }
