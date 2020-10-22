@@ -51,9 +51,9 @@
                     name: '拓展组件',
                     icon: 'fa fa-gear',
                     children: [
-                        {name: '表单', path: ''},
-                        {name: '列表', path: ''},
-                        {name: '详情', path: ''}
+                        {name: '表单', path: '/form'},
+                        {name: '列表', path: '/tableList'},
+                        {name: '详情', path: '/billDetail'}
                     ]
                 }
             ]

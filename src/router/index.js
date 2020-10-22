@@ -59,6 +59,27 @@ const routes = [
         component: function () {
             return import('../views/baseComponents/tableDemo')
         }
+    },
+    {
+        path: '/form',
+        name: 'Form',
+        component: function () {
+            return import('../views/extensionComponents/formDemo')
+        }
+    },
+    {
+        path: '/tableList',
+        name: 'TableList',
+        component: function () {
+            return import('../views/extensionComponents/tableListDemo')
+        }
+    },
+    {
+        path: '/billDetail',
+        name: 'BillDetail',
+        component: function () {
+            return import('../views/extensionComponents/billDetailDemo')
+        }
     }
 ];
 
