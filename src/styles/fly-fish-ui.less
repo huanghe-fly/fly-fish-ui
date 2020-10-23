@@ -580,6 +580,13 @@
     display: flex;
     .search-groups-wrapper {
         flex: 1;
+        &.open {
+            height: auto;
+        }
+        &.close {
+            height: 32px;
+            overflow: hidden;
+        }
         ul {
             li {
                 float: left;
