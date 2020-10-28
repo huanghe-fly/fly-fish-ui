@@ -34,6 +34,7 @@
                 <span class="search-setting" @click="searchSetting"><i class="fa fa-cog"></i></span>
             </div>
         </div>
+        <fly-dialog v-model="settingDialogVisible"></fly-dialog>
     </div>
 </template>
 
@@ -41,6 +42,7 @@
     import FlyInput from '@/packages/base/fly-input/fly-input'
     import FlySelect from '@/packages/base/fly-select/fly-select'
     import FlyButton from '@/packages/base/fly-button/fly-button'
+    import FlyDialog from '@/packages/base/fly-dialog/fly-dialog'
     export default {
         name: 'fly-search-groups',
         props: {
@@ -51,12 +53,13 @@
                 type: Object
             }
         },
-        components: {FlyInput, FlySelect, FlyButton},
+        components: {FlyInput, FlySelect, FlyButton, FlyDialog},
         data() {
             return {
                 searchData: {}, // 表单数据
                 resetSearchData: {}, // 记录原始数据
                 triggerStatus: 'close', // 展开折叠状态 open close
+                settingDialogVisible: false
             };
         },
         computed: {
@@ -100,7 +103,7 @@
             },
             // 设置
             searchSetting() {
-
+                this.settingDialogVisible = true;
             },
             // 单项变化事件
             searchItemChange(item, value) {

@@ -506,6 +506,65 @@
         }
     }
 }
+.fly-dialog {
+    position: fixed;
+    top: 180px;
+    left: 200px;
+    background: #fff;
+    z-index: 10000;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    display: flex;
+    flex-direction: column;
+    &#moveDialog {
+        .fly-dialog-header {
+            cursor: all-scroll;
+        }
+    }
+    .fly-dialog-mask {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,.65);
+    }
+    .fly-dialog-header {
+        height: 40px;
+        min-height: 40px;
+        line-height: 40px;
+        background: #f3f3f3;
+        padding: 0 16px;
+        display: flex;
+        justify-content: space-between;
+        .fly-dialog-title {
+
+        }
+        .fly-dialog-close {
+            &:hover {
+                color: #0066ff;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .fly-dialog-content {
+        flex: 1;
+        height: 0;
+        padding: 8px 16px;
+    }
+    .fly-dialog-footer {
+        height: 40px;
+        min-height: 40px;
+        line-height: 40px;
+        background: #f3f3f3;
+        padding: 0 16px;
+        text-align: right;
+        .fly-button {
+            margin-right: 10px;
+        }
+        .fly-button:last-child {
+            margin-right: 0;
+        }
+    }
+}
 .fly-disabled {
     cursor: not-allowed !important;
 }

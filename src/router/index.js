@@ -61,6 +61,13 @@ const routes = [
         }
     },
     {
+        path: '/dialog',
+        name: 'Dialog',
+        component: function () {
+            return import('../views/baseComponents/dialogDemo')
+        }
+    },
+    {
         path: '/form',
         name: 'Form',
         component: function () {

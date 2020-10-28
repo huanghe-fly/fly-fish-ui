@@ -44,7 +44,8 @@
                         {name: '按钮', path: '/button'},
                         {name: '表格', path: '/table'},
                         {name: '分页', path: '/pagination'},
-                        {name: '日期选择', path: '/picker'}
+                        {name: '日期选择', path: '/picker'},
+                        {name: '弹框', path: '/dialog'},
                     ]
                 },
                 {
