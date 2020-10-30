@@ -67,6 +67,24 @@
         color: #ccc;
     }
 }
+.fly-checkbox-wrapper {
+    display: inline-block;
+    line-height: 20px;
+    position: relative;
+    cursor: pointer;
+    .fly-checkbox {
+        top: 2px;
+    }
+    .fly-checkbox-label {
+        display: inline-block;
+        padding: 0 8px;
+    }
+    &:hover {
+        .fly-checkbox {
+            border-color: #409eff;
+        }
+    }
+}
 .fly-checkbox {
     display: inline-block;
     position: relative;
@@ -112,6 +130,9 @@
     }
     &.is-checked {
         background-color: #409eff;
+        border-color: #409eff;
+    }
+    &:hover {
         border-color: #409eff;
     }
 }
@@ -670,7 +691,9 @@
 
     }
     .search-button-wrapper {
+        width: 197px;
         .search-button {
+            text-align: right;
             .search-trigger {
                 margin-right: 4px;
                 cursor: pointer;
@@ -684,6 +707,66 @@
             .search-setting {
                 margin-left: 4px;
                 cursor: pointer;
+            }
+        }
+    }
+}
+.fly-set-col {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    .set-col-item {
+        display: flex;
+        flex-direction: column;
+        .title {
+            padding-bottom: 8px;
+        }
+        .set-col-item-content {
+            flex: 1;
+            height: 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+    }
+    .set-col-left {
+        flex: 1;
+        margin-right: 20px;
+        .search {
+            margin-bottom: 8px;
+        }
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+            li {
+                width: 50%;
+                height: 32px;
+                line-height: 32px;
+                padding: 0 8px;
+            }
+        }
+    }
+    .set-col-right {
+        width: 250px;
+        .selectedItem {
+            height: 32px;
+            line-height: 32px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            &:hover {
+                background: #d2eafb;
+                color: #06f;
+            }
+            .set-col-right-buttons {
+                &:hover {
+                    color: #333;
+                }
+                i+i {
+                    margin-left: 8px;
+                    cursor: pointer;
+                }
             }
         }
     }

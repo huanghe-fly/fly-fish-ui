@@ -42,8 +42,7 @@
                 default: 500
             },
             height: {
-                type: Number,
-                default: 200
+                type: Number
             },
             top: {
                 type: Number,
@@ -68,7 +67,7 @@
                 const winWidth = document.body.clientWidth;
                 const style = {
                     width: `${this.width}px`,
-                    height: `${this.height}px`,
+                    height: this.height ? `${this.height}px` : 'auto',
                     top: `${this.top}px`,
                     left: `${(winWidth - this.width) / 2}px`
                 };

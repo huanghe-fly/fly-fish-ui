@@ -5,7 +5,7 @@
     <div>
         查询框
         <div class="">
-            <fly-search-groups :searchItems="searchItems" :defaultData="defaultData"></fly-search-groups>
+            <fly-search-groups v-model="searchItems" :defaultData="defaultData"></fly-search-groups>
         </div>
     </div>
 </template>
@@ -29,14 +29,30 @@
         methods: {},
         mounted() {
             this.searchItems = [
-                {label: '年龄', dataIndex: 'age', type: 'text'},
-                {label: '出生年月', dataIndex: 'birthday', type: 'text'},
-                {label: '学历', dataIndex: 'education', type: 'text'},
-                {label: '家庭住址', dataIndex: 'address', type: 'text'},
-                {label: '手机号', dataIndex: 'phone', type: 'text'},
-                {label: '年龄', dataIndex: 'age2', type: 'text'},
-                {label: '年龄', dataIndex: 'age3', type: 'text'},
-                {label: '年龄', dataIndex: 'age4', type: 'text'}
+                {label: '年龄', dataIndex: 'age', type: 'text', checked: true},
+                {label: '出生年月', dataIndex: 'birthday', type: 'text', checked: true},
+                {label: '学历', dataIndex: 'education', type: 'text', checked: true},
+                {label: '家庭住址', dataIndex: 'address', type: 'text', checked: true},
+                {label: '手机号', dataIndex: 'phone', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age2', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age3', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age4', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age5', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age6', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age7', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age8', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age9', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age10', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age11', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age12', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age13', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age14', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age15', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age16', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age17', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age18', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age19', type: 'text', checked: false},
+                {label: '年龄', dataIndex: 'age20', type: 'text', checked: false},
             ]
         },
         watch: {}

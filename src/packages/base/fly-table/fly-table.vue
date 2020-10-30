@@ -306,7 +306,7 @@
             headerCheckboxClass: function () {
                 if (this.selectedRows.length !== 0) {
                     if (this.selectedRows.length === this.dataSource.length) {
-                        return ' is-checked '
+                        return 'is-checked'
                     } else {
                         return 'is-checked is-indeterminate'
                     }
