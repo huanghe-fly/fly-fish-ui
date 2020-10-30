@@ -2,14 +2,17 @@
 @author huangHe
 -->
 <template>
-    <div>列表</div>
+    <div>
+        <fly-list-module></fly-list-module>
+    </div>
 </template>
 
 <script>
+    import FlyListModule from "../../packages/extension/fly-list-module/fly-list-module";
     export default {
-        name: 'tableListDemo',
+        name: 'listModuleDemo',
         props: {},
-        components: {},
+        components: {FlyListModule},
         data() {
             return {};
         },

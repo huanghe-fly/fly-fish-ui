@@ -82,10 +82,17 @@ const routes = [
         }
     },
     {
-        path: '/tableList',
-        name: 'TableList',
+        path: '/listTable',
+        name: 'ListTable',
         component: function () {
-            return import('../views/extensionComponents/tableListDemo')
+            return import('../views/extensionComponents/listTableDemo')
+        }
+    },
+    {
+        path: '/listModule',
+        name: 'ListModule',
+        component: function () {
+            return import('../views/extensionComponents/listModuleDemo')
         }
     },
     {

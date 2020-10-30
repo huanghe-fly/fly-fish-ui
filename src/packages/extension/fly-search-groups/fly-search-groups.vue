@@ -7,18 +7,18 @@
             <ul ref="searchItemsWrapper">
                 <template v-for="(item, index) of searchItems">
                     <li :key="index" v-if="item.checked">
-                        <label class="search-item-label">{{item.label}}：</label>
+                        <label class="search-item-label">{{item.title}}：</label>
                         <span class="search-item-value">
                             <!--普通文本-->
                             <template v-if="item.type === 'text'">
                                 <fly-input v-model="searchData[item.dataIndex]"
-                                           :placeholder="item.placeholder?item.placeholder : `请输入${item.label}`"
+                                           :placeholder="item.placeholder?item.placeholder : `请输入${item.title}`"
                                            @change="searchItemChange(item, searchData[item.dataIndex])"/>
                             </template>
                             <!--下拉选择-->
                             <template v-if="item.type === 'list'">
                                 <fly-select v-model="searchData[item.dataIndex]"
-                                            :placeholder="item.placeholder?item.placeholder : `请选择${item.label}`"
+                                            :placeholder="item.placeholder?item.placeholder : `请选择${item.title}`"
                                             @change="searchItemChange(item, searchData[item.dataIndex])"/>
                             </template>
                         </span>
@@ -44,7 +44,7 @@
                     <div class="set-col-item-content">
                         <ul>
                             <li v-for="(item, index) of cloneItems" :key="index">
-                                <fly-checkbox v-model="item.checked" :label="item.label" @click="chooseItem(item)"/>
+                                <fly-checkbox v-model="item.checked" :label="item.title" @click="chooseItem(item)"/>
                             </li>
                         </ul>
                     </div>
@@ -56,7 +56,7 @@
                             <li class="selectedItem" v-for="(item, i) in selectedItem"
                                 :key="i"
                                 :title="item.label">
-                                <span>{{ item.label }}</span>
+                                <span>{{ item.title }}</span>
                                 <span class="set-col-right-buttons">
                                     <i class="fa fa-trash-o" @click="deleteItem(item, i)"></i>
                                     <i class="fa fa-arrows"></i>

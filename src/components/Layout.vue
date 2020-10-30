@@ -42,7 +42,7 @@
                         {name: '输入框', path: '/input'},
                         {name: '选择框', path: '/select'},
                         {name: '按钮', path: '/button'},
-                        {name: '表格', path: '/table'},
+                        {name: '基础表格', path: '/table'},
                         {name: '分页', path: '/pagination'},
                         {name: '日期选择', path: '/picker'},
                         {name: '弹框', path: '/dialog'},
@@ -54,8 +54,9 @@
                     children: [
                         {name: '表单', path: '/form'},
                         {name: '查询', path: '/searchGroups'},
-                        {name: '列表', path: '/tableList'},
-                        {name: '详情', path: '/billDetail'}
+                        {name: '表格', path: '/listTable'},
+                        {name: '列表页面', path: '/listModule'},
+                        {name: '详情页面', path: '/billDetail'}
                     ]
                 }
             ]
