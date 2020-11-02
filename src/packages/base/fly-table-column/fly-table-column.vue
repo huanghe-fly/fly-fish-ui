@@ -31,14 +31,13 @@
         },
         data() {
             return {
-                rowData: {}
+                column: {}
             }
         },
         computed: {
-
         },
         mounted() {
-            const columns = {
+            const column = {
                 dataIndex: this.dataIndex,
                 title: this.title,
                 width: this.width,
@@ -49,14 +48,24 @@
                 headerSlots: null,
                 bodySlots: null
             };
+            // 默认多选框和序号左侧固定
+            if (this.type === 'selection' || this.type === 'index') {
+                column.fixed = 'left';
+            }
             if(this.$scopedSlots.default) {
-                columns.bodySlots = this.$scopedSlots
+                column.bodySlots = this.$scopedSlots
             }
             if (this.$scopedSlots.header) {
-                columns.headerSlots = this.$scopedSlots
+                column.headerSlots = this.$scopedSlots
             }
-            this.rowData = columns;
-            this.$store.dispatch('addColumns', columns);
+            this.column = column;
+            this.$parent.tableColumns.push(column);
+        },
+        beforeDestroy() {
+            const index = this.$parent.tableColumns.indexOf(this.column);
+            if (index > 1) {
+                this.$parent.tableColumns.splice(index, 1);
+            }
         }
     }
 </script>

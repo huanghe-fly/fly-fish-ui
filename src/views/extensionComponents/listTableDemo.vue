@@ -21,175 +21,175 @@
                     {
                         title: '单据编号',
                         dataIndex: 'name',
-                        key: '0',
                         width: 150,
                         fixed: 'left',
                         align: 'left',
-                        display: true,
-                        search: true,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '取得方式',
                         dataIndex: 'age',
-                        key: '1',
                         width: 100,
                         fixed: 'left',
                         align: 'right',
-                        display: true,
-                        search: true,
-                        searchType: 'select'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '取得日期',
                         dataIndex: 'address',
-                        key: '2',
                         width: 150,
                         align: 'left',
-                        display: true,
-                        search: true,
-                        searchType: 'time'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '合同编号',
                         dataIndex: 'address',
-                        key: '3',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '发票编号',
                         dataIndex: 'address',
-                        key: '4',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '采购组织形式',
                         dataIndex: 'address',
-                        key: '5',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '预算项目',
                         dataIndex: 'address',
-                        key: '6',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '供应商',
                         dataIndex: 'address',
-                        key: '7',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '到货日期',
                         dataIndex: 'address',
-                        key: '8',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'time'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '验收人',
                         dataIndex: 'address',
-                        key: '9',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '入库说明',
                         dataIndex: 'address',
-                        key: '10',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'textarea'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '入库数量',
                         dataIndex: 'address',
-                        key: '11',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '入库总金额',
                         dataIndex: 'address',
-                        key: '12',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '制单日期',
                         dataIndex: 'address',
-                        key: '13',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'time'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '制单人',
                         dataIndex: 'address',
-                        key: '14',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '审核日期',
                         dataIndex: 'address',
-                        key: '15',
                         width: 150,
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'time'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     },
                     {
                         title: '审核人',
                         dataIndex: 'address',
-                        key: '16',
                         width: 150,
                         fixed: 'right',
                         align: 'center',
-                        display: true,
-                        search: false,
-                        searchType: 'input'
+                        display: '1',
+                        searchChecked: '1',
+                        searchable: '1',
+                        type: 'text'
                     }
                 ],
                 data: []

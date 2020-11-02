@@ -3,7 +3,7 @@
 -->
 <template>
     <span class="fly-checkbox-wrapper">
-        <span class="fly-checkbox" :class="value ? 'is-checked' : ''" @click="change"></span>
+        <span class="fly-checkbox" :class="value === true || value === '1' ? 'is-checked' : ''" @click="change"></span>
         <span class="fly-checkbox-label" @click="change">{{label}}</span>
     </span>
 </template>
@@ -13,7 +13,7 @@
         name: 'fly-checkbox',
         props: {
             value: {
-                type: Boolean,
+                type: [Boolean, String],
                 default: false
             },
             label: {
@@ -32,7 +32,12 @@
         },
         methods: {
             change() {
-                this.$emit('change', !this.value);
+                if (this.value === true || this.value === '1') {
+                    this.$emit('change', this.value === true ? false : '0');
+                } else {
+                    this.$emit('change', this.value === false ? true : '1');
+                }
+
                 this.$emit('click');
             }
         },

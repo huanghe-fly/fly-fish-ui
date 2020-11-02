@@ -294,6 +294,29 @@
             }
         },
         computed: {
+            fixedColumns: function () {
+                const leftColumns = [];
+                let leftWidth = 0;
+                const rightColumns = [];
+                let rightWidth = 0;
+                this.tableColumns.forEach((item, index) => {
+                    this.totalWidth = this.totalWidth + parseFloat(item.width);
+                    if (item.fixed && item.fixed === 'left') {
+                        leftColumns.push(item);
+                        leftWidth = leftWidth + parseFloat(item.width);
+                    }
+                    if (item.fixed && item.fixed === 'right') {
+                        rightColumns.push(item);
+                        rightWidth = rightWidth + parseFloat(item.width) + 1;
+                    }
+                });
+                return {
+                    leftColumns: leftColumns,
+                    leftWidth: leftWidth,
+                    rightColumns: rightColumns,
+                    rightWidth: rightWidth
+                }
+            },
             // table的实际高度
             tableHeight: function () {
                 if (this.dataSource.length > 0) {
@@ -320,9 +343,6 @@
             initTable() {
                 if (this.columns) {
                     this.tableColumns = this.columns;
-                } else {
-                    this.tableColumns = this.$store.state.columns;
-                    this.$store.dispatch('clearColumns');
                 }
                 this.totalWidth = 0;
                 this.fixedLeftColumns = [];
@@ -394,6 +414,8 @@
                 const scrollMask = tableDom.querySelector(".scrollMask");
                 if (scrollXWidth && tableFixedLeft) {
                     tableFixedLeft.style.maxHeight = 'calc(100% - ' + scrollXWidth + 'px)';
+                }
+                if (scrollXWidth && tableFixedRight) {
                     tableFixedRight.style.maxHeight = 'calc(100% - ' + scrollXWidth + 'px)';
                 }
                 if (scrollYWidth && tableFixedRight) {
@@ -500,6 +522,14 @@
         },
         watch: {
             columns: {
+                handler(newV) {
+                    if (newV) {
+                        this.initTable();
+                    }
+                },
+                deep: true
+            },
+            tableColumns: {
                 handler(newV) {
                     this.initTable();
                 },
