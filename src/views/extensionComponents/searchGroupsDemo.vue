@@ -5,7 +5,7 @@
     <div>
         查询框
         <div class="">
-            <fly-search-groups v-model="searchItems" :defaultData="defaultData"></fly-search-groups>
+            <fly-search-groups :searchItems="searchItems" :defaultData="defaultData"></fly-search-groups>
         </div>
     </div>
 </template>

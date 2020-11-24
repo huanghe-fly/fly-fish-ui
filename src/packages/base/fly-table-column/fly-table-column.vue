@@ -1,10 +1,14 @@
 <!--
 @author huangHe
 -->
+<!--<template>
+    <div>{{title}}-&#45;&#45;</div>
+</template>-->
 <script>
     export default {
         name: "fly-table-column",
         render: function (createElement) {
+            return createElement("span", this.title);
         },
         props: {
             dataIndex: {
@@ -35,6 +39,8 @@
             }
         },
         computed: {
+        },
+        methods: {
         },
         mounted() {
             const column = {

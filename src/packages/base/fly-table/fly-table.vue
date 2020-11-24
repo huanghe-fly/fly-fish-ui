@@ -48,7 +48,7 @@
                 </table>
             </div>
             <div class="fly-table-body">
-                <div :style="{'height': `${tableHeight}px`, 'width': `${totalWidth}px`, 'paddingTop': `${tablePaddingTop}px`}">
+                <div :style="{'height': `${tableHeight}px`, 'width': `${totalWidth}px`, 'paddingTop': `${tablePaddingTop}px`, 'min-width': '100%'}">
                     <table v-if="dataSource.length > 0" :width="totalWidth">
                         <tbody>
                         <tr v-for="(item, index) in readerData"
@@ -128,7 +128,7 @@
                 </table>
             </div>
             <div class="fly-table-fixed-body">
-                <div class="" :style="{'height': `${tableHeight}px`, 'paddingTop': `${tablePaddingTop}px`}">
+                <div class="" :style="{'height': `${tableHeight}px`, 'paddingTop': `${tablePaddingTop}px`, 'min-width': '100%'}">
                     <table :width="fixedLeftWidth" v-if="dataSource.length > 0">
                         <tbody>
                         <tr v-for="(item, index) in readerData"
@@ -191,7 +191,7 @@
                 </table>
             </div>
             <div class="fly-table-fixed-body">
-                <div class="" :style="{'height': `${tableHeight}px`, 'paddingTop': `${tablePaddingTop}px`}">
+                <div class="" :style="{'height': `${tableHeight}px`, 'paddingTop': `${tablePaddingTop}px`, 'min-width': '100%'}">
                     <table :width="fixedRightWidth" v-if="dataSource.length > 0">
                         <tbody>
                         <tr v-for="(item, index) in readerData"
@@ -390,8 +390,13 @@
                 this.scrollWidth = tableBody.offsetWidth - tableBody.scrollWidth;
                 tableBody.addEventListener("scroll", (e) => {
                     tableHeader.scrollLeft = tableBody.scrollLeft;
-                    tableFixedLeftBody[0].scrollTop = tableBody.scrollTop;
-                    tableFixedLeftBody[1].scrollTop = tableBody.scrollTop;
+                    if (tableFixedLeftBody.length === 1) {
+                        tableFixedLeftBody[0].scrollTop = tableBody.scrollTop;
+                    }
+                    if (tableFixedLeftBody.length === 2) {
+                        tableFixedLeftBody[0].scrollTop = tableBody.scrollTop;
+                        tableFixedLeftBody[1].scrollTop = tableBody.scrollTop;
+                    }
                     if (tableBody.scrollLeft === 0) {
                         this.scrollLeftOrRight = 'left';
                     } else if (tableBody.scrollLeft + tableBody.clientWidth === tableBody.scrollWidth) {
@@ -525,6 +530,9 @@
                 handler(newV) {
                     if (newV) {
                         this.initTable();
+                        this.$nextTick(() => {
+                            this.setTable();
+                        })
                     }
                 },
                 deep: true
@@ -532,6 +540,9 @@
             tableColumns: {
                 handler(newV) {
                     this.initTable();
+                    this.$nextTick(() => {
+                        this.setTable();
+                    })
                 },
                 deep: true
             },

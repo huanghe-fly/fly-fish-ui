@@ -130,7 +130,7 @@
                         searchable: '1',
                         type: 'text'
                     },
-                    {
+                    /*{
                         title: '入库数量',
                         dataIndex: 'address',
                         width: 150,
@@ -179,7 +179,7 @@
                         searchChecked: '1',
                         searchable: '1',
                         type: 'text'
-                    },
+                    },*/
                     {
                         title: '审核人',
                         dataIndex: 'address',

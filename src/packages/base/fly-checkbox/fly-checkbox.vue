@@ -37,7 +37,6 @@
                 } else {
                     this.$emit('change', this.value === false ? true : '1');
                 }
-
                 this.$emit('click');
             }
         },

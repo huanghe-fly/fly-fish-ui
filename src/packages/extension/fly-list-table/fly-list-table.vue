@@ -10,14 +10,16 @@
                     <i class="fa fa-bars" @click="columnsSetting"></i>
                 </template>
             </fly-table-column>
-            <fly-table-column v-for="column in tableColumns" :key="column.key"
-                              :title="column.title" :data-index="column.dataIndex" :width="column.width"
-                              :fixed="column.fixed" :header-align="column.align"
-                              :align="column.align">
-                <template slot-scope="scope">
-                    {{scope.row[column.dataIndex]}}
-                </template>
-            </fly-table-column>
+            <template v-for="column in showColumns">
+                <fly-table-column  :key="column.key"
+                                   :title="column.title" :data-index="column.dataIndex" :width="column.width"
+                                   :fixed="column.fixed" :header-align="column.align"
+                                   :align="column.align">
+                    <template slot-scope="scope">
+                        {{scope.row[column.dataIndex]}}
+                    </template>
+                </fly-table-column>
+            </template>
         </fly-table>
         <fly-dialog v-model="settingDialogVisible" title="调栏" :width="720" :height="500" @handleOk="handleOk">
             <div class="fly-set-col">
@@ -28,7 +30,7 @@
                     </span>
                     <div class="set-col-item-content">
                         <ul>
-                            <li v-for="(item, index) of cloneItems" :key="index">
+                            <li v-for="(item, index) of searchColumns" :key="index">
                                 <fly-checkbox v-model="item.display" :label="item.title" @click="chooseItem(item)"/>
                             </li>
                         </ul>
@@ -37,8 +39,8 @@
                 <div class="set-col-item set-col-right">
                     <span class="title">已选列：</span>
                     <div class="set-col-item-content">
-                        <draggable element="ul" v-model="selectedItem" v-bind:options="dragOptions">
-                            <li class="selectedItem" v-for="(item, i) in selectedItem"
+                        <draggable v-model="selectedColumns" element="ul" v-bind="dragOptions">
+                            <li class="selectedItem" v-for="(item, i) in selectedColumns"
                                 :key="i"
                                 :title="item.title">
                                 <span>{{ item.title }}</span>
@@ -75,10 +77,11 @@
         components: {FlyTable, FlyTableColumn, FlyDialog, FlyInput, FlyCheckbox, draggable},
         data() {
             return {
-                tableColumns: null, // 复制的columns 用于显示表格
+                cloneColumns: [], // 复制的columns, 便于本地修改
+                showColumns: [], // 表格显示的column
                 settingDialogVisible: false,
-                cloneItems: null, // 克隆的查询条件
-                selectedItem: null, // 选中的查询条件
+                searchColumns: [], // 所有的查询条件
+                selectedColumns: [], // 选中的查询条件
                 dragOptions: { // 拖拽组件参数
                     animation: 120,
                     scroll: true,
@@ -94,42 +97,49 @@
             },
             // 调栏
             columnsSetting() {
-                this.cloneItems = JSON.parse(JSON.stringify(this.columns));
-                this.selectedItem = JSON.parse(JSON.stringify(this.columns.filter(i => i.display === '1')));
+                this.searchColumns = JSON.parse(JSON.stringify(this.cloneColumns));
+                this.selectedColumns = JSON.parse(JSON.stringify(this.cloneColumns.filter(i => i.display === '1')));
                 this.settingDialogVisible = true;
             },
             // 选择查询条件
             chooseItem(item) {
-                const findIndex = this.selectedItem.findIndex(i => JSON.stringify(i) === JSON.stringify(item));
-                if (item.display === '1') {
-                    this.selectedItem.push(item);
+                const newItem =  JSON.parse(JSON.stringify(item));
+                if (newItem.display === '1') {
+                    this.selectedColumns.push(newItem);
                 } else {
-                    this.selectedItem.splice(findIndex, 1)
+                    // 还原数据为了找到选中里的值
+                    newItem.display = '1';
+                    const findIndex = this.selectedColumns.findIndex(i => JSON.stringify(i) === JSON.stringify(newItem));
+                    this.selectedColumns.splice(findIndex, 1);
                 }
             },
             // 删除选中的条件
             deleteItem(item, index) {
-                const findIndex = this.cloneItems.findIndex(i => JSON.stringify(i) === JSON.stringify(item));
-                this.selectedItem.splice(index, 1);
-                this.cloneItems[findIndex].display = '0';
+                const findIndex = this.cloneColumns.findIndex(i => JSON.stringify(i) === JSON.stringify(item));
+                this.selectedColumns.splice(index, 1);
+                this.cloneColumns[findIndex].display = '0';
             },
             // 设置按钮确定
             handleOk() {
-                const newItem = JSON.parse(JSON.stringify(this.cloneItems));
+                const newItems = JSON.parse(JSON.stringify(this.searchColumns));
+                const newSelected = JSON.parse(JSON.stringify(this.selectedColumns));
                 this.settingDialogVisible = false;
-                this.tableColumns = JSON.parse(JSON.stringify(this.selectedItem));
+                this.showColumns = newSelected;
+                // 同步克隆的查询条件
+                this.cloneColumns = newItems;
                 // 点击确定后返回selectedItem：选中的列；newItem最新的列
-                this.$emit('handleOk', this.selectedItem, newItem);
-                console.log(this.tableColumns)
+                this.$emit('handleOk', newSelected, newItems);
             }
         },
         mounted() {
-            this.tableColumns = JSON.parse(JSON.stringify(this.columns));
+            this.cloneColumns = JSON.parse(JSON.stringify(this.columns));
+            this.showColumns = JSON.parse(JSON.stringify(this.columns.filter(i => i.display === '1')));
         },
         watch: {
             columns: {
                 handler(val) {
-                    this.tableColumns = JSON.parse(JSON.stringify(val));
+                    this.cloneColumns = JSON.parse(JSON.stringify(val));
+                    this.showColumns = JSON.parse(JSON.stringify(val.filter(i => i.display === '1')));
                 },
                 deep: true
             }

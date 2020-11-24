@@ -94,12 +94,12 @@
         components: {FlyInput, FlySelect, FlyButton, FlyDialog, FlyCheckbox, draggable},
         data() {
             return {
-                cloneItems: null, // 克隆的查询条件
+                cloneItems: [], // 克隆的查询条件
                 searchData: {}, // 表单数据
                 resetSearchData: {}, // 记录原始数据
                 triggerStatus: 'close', // 展开折叠状态 open close
                 settingDialogVisible: false,
-                selectedItem: null, // 选中的查询条件
+                selectedItem: [], // 选中的查询条件
                 dragOptions: { // 拖拽组件参数
                     animation: 120,
                     scroll: true,
@@ -154,10 +154,12 @@
             },
             // 选择查询条件
             chooseItem(item) {
-                const findIndex = this.selectedItem.findIndex(i => JSON.stringify(i) === JSON.stringify(item));
-                if (item.checked) {
-                    this.selectedItem.push(item);
+                const newItem =  JSON.parse(JSON.stringify(item));
+                if (newItem.checked) {
+                    this.selectedItem.push(newItem);
                 } else {
+                    newItem.checked = !newItem.checked;
+                    const findIndex = this.selectedItem.findIndex(i => JSON.stringify(i) === JSON.stringify(newItem));
                     this.selectedItem.splice(findIndex, 1)
                 }
             },
@@ -171,7 +173,7 @@
             handleOk() {
                 const newItem = JSON.parse(JSON.stringify(this.cloneItems));
                 this.settingDialogVisible = false;
-                this.$emit('change', newItem);
+                // this.$emit('change', newItem);
                 // 点击确定后返回selectedItem：选中的查询条件；newItem最新的查询条件
                 this.$emit('handleOk', this.selectedItem, newItem);
                 this.getShowTriggerStatus();
