@@ -13,7 +13,7 @@
                 <table :width="totalWidth">
                     <thead>
                     <tr>
-                        <template v-for="(column, index) in tableColumns">
+                        <template v-for="(column, index) in formatColumns.columns">
                             <template v-if="column.type === 'selection'">
                                 <th :width="column.width" :align="column.headerAlign" class="table-fixed-left">
                                     <span :class="['fly-checkbox', headerCheckboxClass]" @click="selectAll"></span>
@@ -294,23 +294,26 @@
             }
         },
         computed: {
-            fixedColumns: function () {
+            formatColumns: function () {
                 const leftColumns = [];
                 let leftWidth = 0;
                 const rightColumns = [];
                 let rightWidth = 0;
+                const contentColumns = [];
                 this.tableColumns.forEach((item, index) => {
-                    this.totalWidth = this.totalWidth + parseFloat(item.width);
+                    // this.totalWidth = this.totalWidth + parseFloat(item.width);
                     if (item.fixed && item.fixed === 'left') {
                         leftColumns.push(item);
                         leftWidth = leftWidth + parseFloat(item.width);
-                    }
-                    if (item.fixed && item.fixed === 'right') {
+                    } else if (item.fixed && item.fixed === 'right') {
                         rightColumns.push(item);
                         rightWidth = rightWidth + parseFloat(item.width) + 1;
+                    } else {
+                        contentColumns.push(item)
                     }
                 });
                 return {
+                    columns: [...leftColumns, ...contentColumns, ...rightColumns],
                     leftColumns: leftColumns,
                     leftWidth: leftWidth,
                     rightColumns: rightColumns,
