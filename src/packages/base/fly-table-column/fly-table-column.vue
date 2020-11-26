@@ -1,9 +1,6 @@
 <!--
 @author huangHe
 -->
-<!--<template>
-    <div>{{title}}-&#45;&#45;</div>
-</template>-->
 <script>
     export default {
         name: "fly-table-column",
@@ -47,7 +44,7 @@
                 dataIndex: this.dataIndex,
                 title: this.title,
                 width: this.width,
-                fixed: this.fixed === true ? 'left':this.fixed,
+                fixed: this.fixed === true ? 'left' : this.fixed,
                 headerAlign: this.headerAlign,
                 align: this.align,
                 type: this.type,
@@ -67,9 +64,12 @@
             this.column = column;
             this.$parent.tableColumns.push(column);
         },
-        beforeDestroy() {
+        destroyed() {
+            if (!this.$parent) {
+                return;
+            }
             const index = this.$parent.tableColumns.indexOf(this.column);
-            if (index > 1) {
+            if (index > -1) {
                 this.$parent.tableColumns.splice(index, 1);
             }
         }

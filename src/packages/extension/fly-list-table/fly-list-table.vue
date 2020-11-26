@@ -11,10 +11,9 @@
                 </template>
             </fly-table-column>
             <template v-for="column in showColumns">
-                <fly-table-column  :key="column.key"
-                                   :title="column.title" :data-index="column.dataIndex" :width="column.width"
-                                   :fixed="column.fixed" :header-align="column.align"
-                                   :align="column.align">
+                <fly-table-column :key="column.title"
+                    :title="column.title" :data-index="column.dataIndex" :width="column.width"
+                    :fixed="column.fixed" :header-align="column.align" :align="column.align">
                     <template slot-scope="scope">
                         {{scope.row[column.dataIndex]}}
                     </template>
