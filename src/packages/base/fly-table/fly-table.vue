@@ -54,12 +54,11 @@
                         <tr v-for="(item, index) in readerData"
                             :class="[hoverIndex === index ? 'hover-row' : '', getSelectedStatus(item) ? 'selected-row' : '']"
                             @mousemove="mousemove(index)"
-                            @mouseleave="mouseleave(index)"
-                            @click="clickRow(item)">
+                            @mouseleave="mouseleave(index)">
                             <template v-for="(column, i) in tableColumns">
                                 <template v-if="column.type === 'selection'">
                                     <td :width="column.width" :align="column.align" :style="{'height': `${rowHeight}px`}">
-                                        <span class="fly-checkbox" :class="getSelectedStatus(item) ? 'is-checked' : ''"></span>
+                                        <span class="fly-checkbox" :class="getSelectedStatus(item) ? 'is-checked' : ''" @click="selectRow(item)"></span>
                                     </td>
                                 </template>
                                 <template v-else-if="column.type === 'index'">
@@ -90,128 +89,36 @@
         <div v-if="fixedLeftColumns.findIndex(i => i.fixed === 'left') > -1"
              :class="['fly-table-fixed-left', scrollLeftOrRight === 'left'? '':'scrolling-left']"
              :style="{'width': fixedLeftWidth + 'px'}">
-            <div class="fly-table-fixed-header">
-                <table :width="fixedLeftWidth">
-                    <thead>
-                    <tr>
-                        <template v-for="(column, index) in fixedLeftColumns">
-                            <template v-if="column.type === 'selection'">
-                                <th :width="column.width" :align="column.align">
-                                    <span :class="['fly-checkbox', headerCheckboxClass]" @click="selectAll"></span>
-                                </th>
-                            </template>
-                            <template v-else-if="column.type === 'index'">
-                                <th :width="column.width" :align="column.align">
-                                    <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
-                                                  :columns="column"></table-header>
-                                    <span v-if="!column.headerSlots">#</span>
-                                </th>
-                            </template>
-                            <template v-else>
-                                <th :width="column.width" :align="column.headerAlign" :class="[sort ? 'table-sort-wrapper': '']">
-                                    <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
-                                                  :columns="column"></table-header>
-                                    <span v-if="!column.headerSlots">{{column.title}}</span>
-                                    <span v-if="sort" class="table-sort">
-                                        <i class="table-sort-up fa fa-sort-up"
-                                           :class="actionSortIcon === `${index}-1`? 'actionSort':''"
-                                           @click="tableSort(column, 'up', `${index}-1`)"></i>
-                                        <i class="table-sort-down fa fa-sort-up fa-rotate-180"
-                                           :class="actionSortIcon === `${index}-2`? 'actionSort':''"
-                                           @click="tableSort(column, 'down', `${index}-2`)"></i>
-                                    </span>
-                                </th>
-                            </template>
-                        </template>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="fly-table-fixed-body">
-                <div class="" :style="{'height': `${tableHeight}px`, 'paddingTop': `${tablePaddingTop}px`, 'min-width': '100%'}">
-                    <table :width="fixedLeftWidth" v-if="dataSource.length > 0">
-                        <tbody>
-                        <tr v-for="(item, index) in readerData"
-                            :class="[hoverIndex === index ? 'hover-row' : '', getSelectedStatus(item) ? 'selected-row' : '']"
-                            @mousemove="mousemove(index)"
-                            @mouseleave="mouseleave(index)"
-                            @click="clickRow(item)">
-                            <template v-for="(column, i) in fixedLeftColumns">
-                                <template v-if="column.type === 'selection'">
-                                    <td :width="column.width" :align="column.align" :style="{'height': `${rowHeight}px`}">
-                                        <span class="fly-checkbox" :class="getSelectedStatus(item) ? 'is-checked' : ''"></span>
-                                    </td>
-                                </template>
-                                <template v-else-if="column.type === 'index'">
-                                    <td :width="column.width" :align="column.align">
-                                        <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                                    :row="item"></table-body>
-                                        <span v-if="!column.bodySlots">{{item._index}}</span>
-                                    </td>
-                                </template>
-                                <template v-else>
-                                    <td :width="column.width" :align="column.align">
-                                        <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
-                                            <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                                        :row="item"></table-body>
-                                            <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
-                                        </span>
-                                    </td>
-                                </template>
-                            </template>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="fly-table-empty-block" :style="{width: fixedLeftWidth+'px'}" v-if="dataSource.length === 0"></div>
-                </div>
-            </div>
+            <fly-table-fixed-left
+                :columns="fixedLeftColumns"
+                :dataSource="dataSource"
+                :readerData="readerData"
+                :rowHeight="rowHeight"
+                :hoverIndex="hoverIndex"
+                :tablePaddingTop="tablePaddingTop"
+                :selectedRows="selectedRows"
+                @fixedMousemove="mousemove"
+                @fixedMouseleave="mouseleave"
+                @selectAll="selectAll"
+                @selectRow="selectRow"
+                @clickRow="clickRow"
+            />
         </div>
         <div v-if="fixedRightColumns.findIndex(i => i.fixed === 'right') > -1"
              :class="['fly-table-fixed-right', scrollLeftOrRight === 'right'? '':'scrolling-right']"
              :style="{'width': fixedRightWidth + 'px'}">
-            <div class="fly-table-fixed-header">
-                <table :width="fixedRightWidth">
-                    <thead>
-                    <tr>
-                        <th v-for="(column, index) in fixedRightColumns" :width="column.width" :align="column.headerAlign" :class="[sort ? 'table-sort-wrapper': '']">
-                            <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
-                                          :columns="column"></table-header>
-                            <span v-if="!column.headerSlots">{{column.title}}</span>
-                            <span v-if="sort" class="table-sort">
-                                <i class="table-sort-up fa fa-sort-up"
-                                   :class="actionSortIcon === `${index}-1`? 'actionSort':''"
-                                   @click="tableSort(column, 'up', `${index}-1`)"></i>
-                                <i class="table-sort-down fa fa-sort-up fa-rotate-180"
-                                   :class="actionSortIcon === `${index}-2`? 'actionSort':''"
-                                   @click="tableSort(column, 'down', `${index}-2`)"></i>
-                            </span>
-                        </th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="fly-table-fixed-body">
-                <div class="" :style="{'height': `${tableHeight}px`, 'paddingTop': `${tablePaddingTop}px`, 'min-width': '100%'}">
-                    <table :width="fixedRightWidth" v-if="dataSource.length > 0">
-                        <tbody>
-                        <tr v-for="(item, index) in readerData"
-                            :class="[hoverIndex === index ? 'hover-row' : '', getSelectedStatus(item) ? 'selected-row' : '']"
-                            @mousemove="mousemove(index)"
-                            @mouseleave="mouseleave(index)"
-                            @click="clickRow(item)">
-                            <td v-for="column in fixedRightColumns" :width="column.width" :align="column.align">
-                                <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
-                                    <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                                :row="item"></table-body>
-                                    <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
-                                </span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="fly-table-empty-block" :style="{width: fixedRightWidth+'px'}" v-if="dataSource.length === 0"></div>
-                </div>
-            </div>
+            <fly-table-fixed-right
+                    :columns="fixedRightColumns"
+                    :dataSource="dataSource"
+                    :readerData="readerData"
+                    :rowHeight="rowHeight"
+                    :hoverIndex="hoverIndex"
+                    :tablePaddingTop="tablePaddingTop"
+                    :selectedRows="selectedRows"
+                    @fixedMousemove="mousemove"
+                    @fixedMouseleave="mouseleave"
+                    @clickRow="clickRow"
+            />
         </div>
     </div>
 </template>
@@ -219,6 +126,8 @@
 <script>
     import Vue from 'vue'
     import FlyTableColumn from "../fly-table-column/fly-table-column";
+    import FlyTableFixedLeft from "./fly-table-fixed-left"
+    import FlyTableFixedRight from "./fly-table-fixed-right"
 
     // 定义table-header组件,接收显示 slots name是header
     Vue.component("table-header", {
@@ -242,9 +151,13 @@
             }));
         }
     });
+    class MyData {
+        constructor(args) {
+        }
+    }
     export default {
         name: "fly-table",
-        components: {FlyTableColumn},
+        components: {FlyTableColumn, FlyTableFixedLeft, FlyTableFixedRight},
         props: {
             columns: {
                 type: Array
@@ -295,13 +208,14 @@
         },
         computed: {
             formatColumns: function () {
+                let totalWidth = 0;
                 const leftColumns = [];
                 let leftWidth = 0;
                 const rightColumns = [];
                 let rightWidth = 0;
                 const contentColumns = [];
                 this.tableColumns.forEach((item, index) => {
-                    // this.totalWidth = this.totalWidth + parseFloat(item.width);
+                    totalWidth = totalWidth + parseFloat(item.width);
                     if (item.fixed && item.fixed === 'left') {
                         leftColumns.push(item);
                         leftWidth = leftWidth + parseFloat(item.width);
@@ -314,6 +228,7 @@
                 });
                 return {
                     columns: [...leftColumns, ...contentColumns, ...rightColumns],
+                    totalWidth: totalWidth,
                     leftColumns: leftColumns,
                     leftWidth: leftWidth,
                     rightColumns: rightColumns,
@@ -390,6 +305,7 @@
                 const tableHeader = tableDom.querySelector(".fly-table-header");
                 const tableBody = tableDom.querySelector(".fly-table-body");
                 const tableFixedLeftBody = tableDom.querySelectorAll(".fly-table-fixed-body");
+                console.log(tableFixedLeftBody)
                 this.scrollWidth = tableBody.offsetWidth - tableBody.scrollWidth;
                 tableBody.addEventListener("scroll", (e) => {
                     tableHeader.scrollLeft = tableBody.scrollLeft;
@@ -462,8 +378,8 @@
                 }
                 this.$emit('selectionChange', this.selectedRows);
             },
-            // 点击行选中数据
-            clickRow(item) {
+            // 点击复选框选中数据
+            selectRow(item) {
                 const _item = JSON.parse(JSON.stringify(item));
                 delete _item._index;
                 let rowIndex = this.selectedRows.findIndex(i => JSON.stringify(i) === JSON.stringify(_item));
@@ -477,6 +393,23 @@
                     this.selectedRows = [_item];
                 }
                 this.$emit('selectionChange', this.selectedRows);
+            },
+            // 点击行选中数据
+            clickRow(item) {
+                /*const _item = JSON.parse(JSON.stringify(item));
+                delete _item._index;
+                let rowIndex = this.selectedRows.findIndex(i => JSON.stringify(i) === JSON.stringify(_item));
+                if (this.multiple) {
+                    if (rowIndex > -1) {
+                        this.selectedRows.splice(rowIndex, 1);
+                    } else {
+                        this.selectedRows.push(_item);
+                    }
+                } else {
+                    this.selectedRows = [_item];
+                }
+                this.$emit('selectionChange', this.selectedRows);*/
+                this.$emit('clickRow', item);
             },
             // 判断选中的状态(行内)
             getSelectedStatus(item) {

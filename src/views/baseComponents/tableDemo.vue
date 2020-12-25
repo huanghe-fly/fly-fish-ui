@@ -3,7 +3,7 @@
 -->
 <template>
     <div style="height: 500px">
-        <fly-table :dataSource="data" :rowHeight="43" @selectionChange="selectionChange">
+        <fly-table :dataSource="data" :rowHeight="32" @selectionChange="selectionChange">
             <fly-table-column fixed type="selection" header-align="center" align="center" width="50"></fly-table-column>
             <fly-table-column fixed type="index" header-align="center" align="center" width="50">
                 <template slot="header" slot-scope="scope">
@@ -14,9 +14,9 @@
                               :title="column.title" :data-index="column.dataIndex" :width="column.width"
                               :fixed="column.fixed" :header-align="column.align"
                               :align="column.align">
-                <template slot-scope="scope">
+                <!--<template slot-scope="scope">
                     <fly-input v-model="data[scope.index][column.dataIndex]"></fly-input>
-                </template>
+                </template>-->
             </fly-table-column>
             <!--<fly-table-column title="单据编号" dataIndex="name" width="150">
                 <template slot="header" slot-scope="scope">
@@ -44,7 +44,7 @@
     export default {
         name: 'tableDemo',
         props: {},
-        components: {FlyTable, FlyTableColumn, FlyInput},
+        components: {FlyTable, FlyTableColumn, FlyInput },
         data() {
             return {
                 tableColumns: [
@@ -57,7 +57,8 @@
                         align: 'left',
                         display: true,
                         search: true,
-                        searchType: 'input'
+                        searchType: 'input',
+                        edit: 0
                     },
                     {
                         title: '取得方式',
@@ -234,7 +235,7 @@
                 console.log(data)
             },
             changeColumns() {
-                this.tableColumns = [];
+                /*this.tableColumns = [];*/
                 /*this.tableColumns = [
                     {
                         title: '单据编号',
