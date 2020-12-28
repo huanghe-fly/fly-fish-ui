@@ -7,36 +7,36 @@
         <div class="fly-pagination-sizes fly-select">
             <input readonly="readonly"
                    @focus="focus()" @blur="blur()" v-model="pageSizeString"/>
-            <i class="fly-select-icon fa fa-angle-down" :class="isShowOptions ? 'angle-up' : ''"
+            <i class="fly-input-icon iconfont icon-arrow-down" :class="isShowOptions ? 'angle-up' : 'angle-down'"
                tabindex="0" @focus="focus()" @blur="blur()"></i>
             <div v-if="isShowOptions" class="fly-options">
                 <label class="fly-option" v-for="option in pageSizes" @click="clickOption(option)">{{getPageSizeString(option)}}</label>
             </div>
         </div>
-        <button class="fly-button fly-btn-prev" @click="prevPage()"><i class="fa fa-angle-left"></i></button>
+        <button class="fly-button fly-btn-prev" @click="prevPage()"><i class="iconfont icon-arrow-left"></i></button>
         <div class="fly-page" @click="onPageClick($event)">
             <a class="fly-page-number" :class="{ active: currentPage === 1 }"
                v-if="pageCount > 0">1</a>
-            <a class="fly-page-number more quickprev fa"
+            <a class="fly-page-number more quickprev iconfont"
                :class="[quickprevIconClass]"
                v-if="showPrevMore"
                @mouseenter="onMouseEnter('left')"
                @mouseleave="quickprevIconClass = 'icon-more'">
-                <span v-if="quickprevIconClass=='icon-more'">···</span>
+                <span v-if="quickprevIconClass === 'icon-more'">···</span>
             </a>
             <a class="fly-page-number" v-for="page in getPages"
                :class="{ active: currentPage === page }">{{page}}</a>
-            <a class="fly-page-number more quicknext fa"
+            <a class="fly-page-number more quicknext iconfont"
                :class="[quicknextIconClass]"
                v-if="showNextMore"
                @mouseenter="onMouseEnter('right')"
                @mouseleave="quicknextIconClass = 'icon-more'">
-                <span v-if="quicknextIconClass == 'icon-more'">···</span>
+                <span v-if="quicknextIconClass === 'icon-more'">···</span>
             </a>
             <a class="fly-page-number" :class="{ active: currentPage === pageCount }"
                v-if="pageCount > 1">{{pageCount}}</a>
         </div>
-        <button class="fly-button fly-btn-next" @click="nextPage()"><i class="fa fa-angle-right"></i></button>
+        <button class="fly-button fly-btn-next" @click="nextPage()"><i class="iconfont icon-arrow-right"></i></button>
         <div class="fly-pagination-jump"></div>
     </div>
 </template>
@@ -70,7 +70,7 @@
                 maxPageCount: 7, // 最多显示多少页码，不包含more
                 showPrevMore: false,
                 showNextMore: false,
-                quickprevIconClass: 'icon-more',
+                quickprevIconClass: 'icon-more', // icon-more 不是一个图标，空的
                 quicknextIconClass: 'icon-more',
             }
         },
@@ -174,9 +174,9 @@
             onMouseEnter(direction) {
                 if (this.disabled) return;
                 if (direction === 'left') {
-                    this.quickprevIconClass = 'fa-angle-double-left';
+                    this.quickprevIconClass = 'icon-double-arrow-left';
                 } else {
-                    this.quicknextIconClass = 'fa-angle-double-right';
+                    this.quicknextIconClass = 'icon-double-arro-right';
                 }
             },
 

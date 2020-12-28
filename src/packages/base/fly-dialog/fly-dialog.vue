@@ -12,7 +12,7 @@
             <div class="fly-dialog-title">
                 {{title}}
             </div>
-            <span class="fly-dialog-close"><i class="fa fa-close" @click="close"></i></span>
+            <span class="fly-dialog-close"><i class="iconfont icon-close" @click="close"></i></span>
         </div>
         <div class="fly-dialog-content">
             <slot></slot>

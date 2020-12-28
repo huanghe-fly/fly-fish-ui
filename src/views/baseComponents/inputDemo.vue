@@ -8,7 +8,7 @@
         </div>
         <fly-input v-model="testInput" style="width: 200px"/>
         <fly-input v-model="testInput" width="200" placeholder="请输入"/>
-        <fly-input v-model="testInput" width="200" search/>
+        <fly-input v-model="testInput" width="200" search placeholder="请输入请输入请输入请输入请输入"/>
         <div>
             <fly-checkbox v-model="testCheckbox" label="勾选框"/>
         </div>

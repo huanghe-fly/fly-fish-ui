@@ -9,9 +9,7 @@ import './styles/base.less' // 基础样式
 import './styles/layout.less' //布局样式
 import './styles/fly-fish-ui.less' // fly-fish 所有样式
 
-import UmyUi from 'umy-ui'
-import 'umy-ui/lib/theme-chalk/index.css';// 引入样式
-Vue.use(UmyUi);
+import './styles/icon/iconfont.css' // 引入阿里图标
 
 Vue.config.productionTip = false;
 Vue.prototype.util = util;

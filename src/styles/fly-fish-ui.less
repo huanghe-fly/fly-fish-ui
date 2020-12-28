@@ -1,6 +1,13 @@
 /*
 @author huangHe
 */
+.fly-input-icon {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    margin-top: -10.5px;
+    cursor: pointer;
+}
 .fly-button {
     cursor: pointer;
     background-color: #fff;
@@ -54,17 +61,11 @@
     input {
         width: 100%;
         height: 32px;
-        padding: 0 5px;
+        padding: 0 10px;
         display: block;
     }
-    .fly-input-search {
-        position: absolute;
-        top: 50%;
-        right: 8px;
-        margin-top: -6.5px;
-        font-size: 14px;
-        cursor: pointer;
-        color: #ccc;
+    .icon-input {
+        padding-right: 28px;
     }
 }
 .fly-checkbox-wrapper {
@@ -144,31 +145,25 @@
         cursor: pointer;
         width: 100%;
         height: 32px;
-        padding: 0 5px;
+        padding: 0 10px;
         display: block;
     }
-    .fly-select-icon {
-        position: absolute;
-        top: 6px;
-        right: 7px;
-        color: #c0c4cc;
-        font-size: 20px;
-        transition: transform .3s;
-        transform: rotate(0deg);
-        line-height: 16px;
-        cursor: pointer;
-    }
-    .fly-select-icon:focus {
+    .fly-input-icon:focus {
         border: 0;
         outline:none;
     }
     .angle-up {
-        transform: rotate(180deg);
+        transform: rotate(-180deg);
+        transition: 0.3s;
+    }
+    .angle-down {
+        transform: rotate(0deg);
+        transition: 0.3s;
     }
     .fly-options {
         width: 100%;
         position: absolute;
-        top: 30px;
+        top: 40px;
         left: 0;
         border: 1px solid #ccc;
         border-radius: 3px;
@@ -193,7 +188,6 @@
     .fly-picker-wapper {
         position: relative;
         .fly-picker-icon {
-            font-size: 14px;
             color: #ccc;
             position: absolute;
             top: 50%;
@@ -214,9 +208,6 @@
             }
             .fly-picker-right-but {
                 margin-right: 10px;
-            }
-            .fly-button-icon {
-                font-size: 16px;
             }
             .fly-button-text {
                 font-size: 17px;
@@ -490,8 +481,7 @@
 }
 .fly-pagination {
     display: flex;
-    height: 30px;
-    line-height: 30px;
+    height: 32px;
     user-select:none;
     .fly-pagination-total {
         display: inline-block;
@@ -500,6 +490,7 @@
         vertical-align: top;
         box-sizing: border-box;
         margin-right: 10px;
+        line-height: 32px;
     }
     .fly-pagination-sizes {
         width: 100px;
@@ -516,7 +507,7 @@
         margin: 0 5px;
         color: #606266;
         width: 30px;
-        line-height: 30px;
+        line-height: 32px;
         border-radius: 2px;
         text-align: center;
         cursor: pointer;
