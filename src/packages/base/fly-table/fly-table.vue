@@ -10,7 +10,7 @@
         <div class="scrollMask"></div>
         <div class="fly-table-content">
             <div class="fly-table-header">
-                <table :width="totalWidth">
+                <table :width="formatColumns.totalWidth">
                     <thead>
                     <tr>
                         <template v-for="(column, index) in formatColumns.columns">
@@ -48,14 +48,14 @@
                 </table>
             </div>
             <div class="fly-table-body">
-                <div :style="{'height': `${tableHeight}px`, 'width': `${totalWidth}px`, 'paddingTop': `${tablePaddingTop}px`, 'min-width': '100%'}">
-                    <table v-if="dataSource.length > 0" :width="totalWidth">
+                <div :style="{'height': `${tableHeight}px`, 'width': `${formatColumns.totalWidth}px`, 'paddingTop': `${tablePaddingTop}px`, 'min-width': '100%'}">
+                    <table v-if="dataSource.length > 0" :width="formatColumns.totalWidth">
                         <tbody>
                         <tr v-for="(item, index) in readerData"
                             :class="[hoverIndex === index ? 'hover-row' : '', getSelectedStatus(item) ? 'selected-row' : '']"
                             @mousemove="mousemove(index)"
                             @mouseleave="mouseleave(index)">
-                            <template v-for="(column, i) in tableColumns">
+                            <template v-for="(column, i) in formatColumns.columns">
                                 <template v-if="column.type === 'selection'">
                                     <td :width="column.width" :align="column.align" :style="{'height': `${rowHeight}px`}">
                                         <span class="fly-checkbox" :class="getSelectedStatus(item) ? 'is-checked' : ''" @click="selectRow(item)"></span>
@@ -81,16 +81,16 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div class="fly-table-empty-block" :style="{width: totalWidth+'px'}" v-if="dataSource.length === 0"></div>
+                    <div class="fly-table-empty-block" :style="{width: formatColumns.totalWidth+'px'}" v-if="dataSource.length === 0"></div>
                 </div>
             </div>
             <div class="fly-table-empty-no-date" v-if="dataSource.length === 0">暂无数据</div>
         </div>
-        <div v-if="fixedLeftColumns.findIndex(i => i.fixed === 'left') > -1"
+        <div v-if="formatColumns.leftColumns.findIndex(i => i.fixed === 'left') > -1"
              :class="['fly-table-fixed-left', scrollLeftOrRight === 'left'? '':'scrolling-left']"
              :style="{'width': fixedLeftWidth + 'px'}">
             <fly-table-fixed-left
-                :columns="fixedLeftColumns"
+                :columns="formatColumns.leftColumns"
                 :dataSource="dataSource"
                 :readerData="readerData"
                 :rowHeight="rowHeight"
@@ -104,11 +104,11 @@
                 @clickRow="clickRow"
             />
         </div>
-        <div v-if="fixedRightColumns.findIndex(i => i.fixed === 'right') > -1"
+        <div v-if="formatColumns.rightColumns.findIndex(i => i.fixed === 'right') > -1"
              :class="['fly-table-fixed-right', scrollLeftOrRight === 'right'? '':'scrolling-right']"
              :style="{'width': fixedRightWidth + 'px'}">
             <fly-table-fixed-right
-                    :columns="fixedRightColumns"
+                    :columns="formatColumns.rightColumns"
                     :dataSource="dataSource"
                     :readerData="readerData"
                     :rowHeight="rowHeight"
@@ -151,10 +151,6 @@
             }));
         }
     });
-    class MyData {
-        constructor(args) {
-        }
-    }
     export default {
         name: "fly-table",
         components: {FlyTableColumn, FlyTableFixedLeft, FlyTableFixedRight},
@@ -190,11 +186,8 @@
                 tableColumns: [], // table的columns 默认多选框和序号左侧固定
                 tableData: [], // table的数据
                 readerData: [], // table需要渲染的数据
-                totalWidth: 0, // 所有columns的总宽度
                 scrollWidth: 0, // body滚动条的宽度
-                fixedLeftColumns: [], // 左侧fixed数据
                 fixedLeftWidth: 0, // 左侧fixed宽度
-                fixedRightColumns: [], // 右侧fixed数据
                 fixedRightWidth: 0, // 右侧fixed宽度
                 tablePaddingTop: 0,
                 scrollLeftOrRight: 'left', // 横向滚动条是否滚动到最左或最右
@@ -262,24 +255,9 @@
                 if (this.columns) {
                     this.tableColumns = this.columns;
                 }
-                this.totalWidth = 0;
-                this.fixedLeftColumns = [];
-                this.fixedLeftWidth = 0;
-                this.fixedRightColumns = [];
-                this.fixedRightWidth = 0;
-                this.tableColumns.forEach((item, index) => {
-                    this.totalWidth = this.totalWidth + parseFloat(item.width);
-                    // 默认多选框和序号左侧固定
-                    if ((item.fixed && item.fixed === 'left') || item.type === 'selection' || item.type === 'index') {
-                        this.fixedLeftColumns.push(item);
-                        this.fixedLeftWidth = this.fixedLeftWidth + parseFloat(item.width);
-                    }
-                    if (item.fixed && item.fixed === 'right') {
-                        this.fixedRightColumns.push(item);
-                        this.fixedRightWidth = this.fixedRightWidth + parseFloat(item.width) + 1;
-                    }
-                });
-                this.totalWidth += 1;
+                // 根据columns 计算的宽度
+                this.fixedLeftWidth = this.formatColumns.leftWidth;
+                this.fixedRightWidth = this.formatColumns.rightWidth;
                 this.tableDom = document.getElementById(this.tableId);
                 this.tableHeaderDom = this.tableDom.querySelector(".fly-table-header");
                 this.tableBodyDom = this.tableDom.querySelector(".fly-table-body");
@@ -305,7 +283,6 @@
                 const tableHeader = tableDom.querySelector(".fly-table-header");
                 const tableBody = tableDom.querySelector(".fly-table-body");
                 const tableFixedLeftBody = tableDom.querySelectorAll(".fly-table-fixed-body");
-                console.log(tableFixedLeftBody)
                 this.scrollWidth = tableBody.offsetWidth - tableBody.scrollWidth;
                 tableBody.addEventListener("scroll", (e) => {
                     tableHeader.scrollLeft = tableBody.scrollLeft;
