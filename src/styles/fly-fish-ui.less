@@ -165,8 +165,8 @@
         position: absolute;
         top: 40px;
         left: 0;
-        border: 1px solid #ccc;
-        border-radius: 3px;
+        border: 1px solid #888;
+        border-radius: 4px;
         background-color: #fff;
         z-index: 99;
         .fly-option {
@@ -178,6 +178,9 @@
         }
         .fly-option:hover {
             background-color: #f5f7fa;
+        }
+        .actionOption {
+            color: #409eff;
         }
     }
 }
@@ -326,6 +329,16 @@
                 .actionSort {
                     color: #0066ff;
                 }
+            }
+            .split {
+                width: 5px;
+                position: absolute;
+                background: #ff0;
+                top: 0;
+                height: 40px;
+                right: -2px;
+                cursor: col-resize;
+                //z-index: 1000;
             }
         }
         .hover-row {
@@ -508,7 +521,7 @@
         color: #606266;
         width: 30px;
         line-height: 32px;
-        border-radius: 2px;
+        border-radius: 4px;
         text-align: center;
         cursor: pointer;
         padding: 0;

@@ -7,18 +7,19 @@
             <table>
                 <thead>
                 <tr>
-                    <th v-for="(column, index) in columns" :width="column.width" :align="column.headerAlign" :class="[sort ? 'table-sort-wrapper': '']">
+                    <th v-for="(column, index) in columns" :width="column.width" :align="column.headerAlign" :class="[sort ? 'table-sort-wrapper': '', `th_${index}`]">
                         <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
                                       :columns="column"></table-header>
                         <span v-if="!column.headerSlots">{{column.title}}</span>
                         <span v-if="sort" class="table-sort">
-                                <i class="table-sort-up fa fa-sort-up"
-                                   :class="actionSortIcon === `${index}-1`? 'actionSort':''"
-                                   @click="tableSort(column, 'up', `${index}-1`)"></i>
-                                <i class="table-sort-down fa fa-sort-up fa-rotate-180"
-                                   :class="actionSortIcon === `${index}-2`? 'actionSort':''"
-                                   @click="tableSort(column, 'down', `${index}-2`)"></i>
-                            </span>
+                            <i class="table-sort-up fa fa-sort-up"
+                               :class="actionSortIcon === `${index}-1`? 'actionSort':''"
+                               @click="tableSort(column, 'up', `${index}-1`)"></i>
+                            <i class="table-sort-down fa fa-sort-up fa-rotate-180"
+                               :class="actionSortIcon === `${index}-2`? 'actionSort':''"
+                               @click="tableSort(column, 'down', `${index}-2`)"></i>
+                        </span>
+                        <sub class="split" @mousedown="splitDown($event,index, column)"></sub>
                     </th>
                 </tr>
                 </thead>
@@ -32,12 +33,12 @@
                         :class="[hoverIndex === index ? 'hover-row' : '', getSelectedStatus(item) ? 'selected-row' : '']"
                         @mousemove="mousemove(index)"
                         @mouseleave="mouseleave(index)">
-                        <td v-for="column in columns" :width="column.width" :align="column.align">
-                                <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
-                                    <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                                :row="item"></table-body>
-                                    <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
-                                </span>
+                        <td v-for="(column, i) in columns" :width="column.width" :align="column.align" :class="`td_${i}`">
+                            <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
+                                <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
+                                            :row="item"></table-body>
+                                <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
+                            </span>
                         </td>
                     </tr>
                     </tbody>
@@ -168,6 +169,10 @@
             // 表格排序
             tableSort(column, status, actionSortIcon) {
                 this.$emit('tableSort', column, status, actionSortIcon);
+            },
+            // 拖拽
+            splitDown(e, index, column) {
+                this.$emit('splitDown', e, index, column);
             }
         },
         mounted() {

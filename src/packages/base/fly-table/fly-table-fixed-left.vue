@@ -21,7 +21,7 @@
                             </th>
                         </template>
                         <template v-else>
-                            <th :width="column.width" :align="column.headerAlign" :class="[sort ? 'table-sort-wrapper': '']">
+                            <th :width="column.width" :align="column.headerAlign" :class="[sort ? 'table-sort-wrapper': '', `th_${index}`]">
                                 <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
                                               :columns="column"></table-header>
                                 <span v-if="!column.headerSlots">{{column.title}}</span>
@@ -33,6 +33,7 @@
                                        :class="actionSortIcon === `${index}-2`? 'actionSort':''"
                                        @click="tableSort(column, 'down', `${index}-2`)"></i>
                                 </span>
+                                <sub class="split" @mousedown="splitDown($event,index,column)"></sub>
                             </th>
                         </template>
                     </template>
@@ -63,7 +64,7 @@
                                 </td>
                             </template>
                             <template v-else>
-                                <td :width="column.width" :align="column.align">
+                                <td :width="column.width" :align="column.align" :class="`td_${i}`">
                                         <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
                                             <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
                                                         :row="item"></table-body>
@@ -216,6 +217,10 @@
             // 表格排序
             tableSort(column, status, actionSortIcon) {
                 this.$emit('tableSort', column, status, actionSortIcon);
+            },
+            // 拖拽
+            splitDown(e, index, column) {
+                this.$emit('splitDown', e, index, column);
             }
         },
         mounted() {

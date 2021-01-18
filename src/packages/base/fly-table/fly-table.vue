@@ -28,7 +28,7 @@
                             </template>
                             <template v-else>
                                 <th :width="column.width" :align="column.headerAlign"
-                                    :class="[column.fixed ? `table-fixed-${column.fixed}` : '', sort ? 'table-sort-wrapper': '']">
+                                    :class="[column.fixed ? `table-fixed-${column.fixed}` : '', sort ? 'table-sort-wrapper': '', `th_${index}`]">
                                     <table-header v-if="column.headerSlots" :scopedSlots="column.headerSlots"
                                                   :columns="column"></table-header>
                                     <span v-if="!column.headerSlots">{{column.title}}</span>
@@ -40,6 +40,7 @@
                                            :class="actionSortIcon === `${index}-2`? 'actionSort':''"
                                            @click="tableSort(column, 'down', `${index}-2`)"></i>
                                     </span>
+                                    <sub class="split" @mousedown="splitDown($event, index, column)"></sub>
                                 </th>
                             </template>
                         </template>
@@ -69,7 +70,7 @@
                                     </td>
                                 </template>
                                 <template v-else>
-                                    <td :width="column.width" :align="column.align">
+                                    <td :width="column.width" :align="column.align" :class="`td_${i}`">
                                         <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
                                             <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
                                                         :row="item"></table-body>
@@ -102,6 +103,7 @@
                 @selectAll="selectAll"
                 @selectRow="selectRow"
                 @clickRow="clickRow"
+                @splitDown="splitDown"
             />
         </div>
         <div v-if="formatColumns.rightColumns.findIndex(i => i.fixed === 'right') > -1"
@@ -118,6 +120,7 @@
                     @fixedMousemove="mousemove"
                     @fixedMouseleave="mouseleave"
                     @clickRow="clickRow"
+                    @splitDown="splitDown"
             />
         </div>
     </div>
@@ -429,6 +432,44 @@
                     this.dataSource = JSON.parse(JSON.stringify(this.oldDataSource));
                 }
                 this.getTableReaderData();
+            },
+            // 拖拽
+            splitDown(e, index, column) {
+                const vm = this;
+                let divx = e.clientX;
+                let thName = '.th_' + index;
+                let tdName = '.td_' + index;
+                const thDom = document.querySelectorAll(thName);
+                const tdDom = document.querySelectorAll(tdName);
+                const tabDom = document.getElementById(this.tableId);
+                let width = thDom[0].clientWidth; //当前td的宽度
+                let tabW = tabDom.querySelector(".fly-table-body table").clientWidth; //表格的宽度
+                let fixedTabW = 0; //左侧固定表格的宽度
+                if (column.fixed) {
+                    fixedTabW = tabDom.querySelector(".fly-table-fixed-left").clientWidth
+                }
+                let moveW = 0; // 鼠标移动宽度
+                console.log(column)
+                document.onmousemove = function (e) { // 鼠标移动
+                    moveW = e.clientX - divx;
+                    document.body.style.cursor = 'col-resize'; // 鼠标样式
+                    vm.$set(column, 'width', width + moveW)
+                    /*thDom.forEach((item, index) => {
+                        item.style.width = width + moveW + 'px';
+                        tdDom[index].style.width = width + moveW + 'px';
+                        tdDom[index + tdDom.length / 2].style.width = width + moveW + 'px';
+                    });
+                    tabDom.querySelector(".fly-table-header table").style.width = tabW + moveW + 'px';
+                    tabDom.querySelector(".fly-table-body table").style.width = tabW + moveW + 'px';
+                    if (fixedTabW > 0) {
+                        tabDom.querySelector(".fly-table-fixed-left").style.width = fixedTabW + moveW + 'px';
+                    }*/
+                };
+                document.onmouseup = function (e) { // 鼠标松开
+                    document.body.style.cursor = 'default'; // 鼠标样式
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
             }
         },
         mounted() {

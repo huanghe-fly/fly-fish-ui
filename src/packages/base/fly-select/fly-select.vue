@@ -9,14 +9,18 @@
         <i class="fly-input-icon iconfont icon-arrow-down" :class="isShowOptions ? 'angle-up' : 'angle-down'"
            @click="click"></i>
         <div class="fly-options">
-            <label class="fly-option" v-for="option in options" @click="clickOption(option)">{{option.label}}</label>
+            <label class="fly-option" v-for="option in options"
+                   :class="option.value === selectedOption.value ? 'actionOption' : ''"
+                   @click="clickOption(option)">{{option.label}}</label>
         </div>
     </div>
 </template>
 
 <script>
+    // import { mixin } from '@/views/baseComponents/mixin.js';
     export default {
         name: "fly-select",
+        // mixins: [mixin],
         props: {
             width: [Number, String],
             placeholder: String,
@@ -44,7 +48,9 @@
             },
             clickOption(option) {
                 this.selectedOption = option;
-                this.$emit('change', this.selectedOption.value)
+                this.$emit('change', this.selectedOption.value);
+                console.log(`子组件里打印getMySelect: ${this.getMySelect()}`);
+                console.log(`子组件里打印selectValue: ${this.selectValue}`)
             },
             setDefaultValue() {
                 if(this.value) {

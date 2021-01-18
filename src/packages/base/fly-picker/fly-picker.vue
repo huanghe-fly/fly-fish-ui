@@ -5,7 +5,7 @@
     <div class="fly-picker" :style="{'width': width + 'px'}">
         <div class="fly-picker-wapper fly-input">
             <input class="" v-model="currentDay"/>
-            <i class="fly-picker-icon fa fa-calendar"></i>
+            <i class="fly-input-icon iconfont icon-calendar"></i>
         </div>
         <div class="fly-picker-panel">
             <div class="fly-picker-panel-header">
