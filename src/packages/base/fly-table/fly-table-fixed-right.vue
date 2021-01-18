@@ -19,7 +19,7 @@
                                :class="actionSortIcon === `${index}-2`? 'actionSort':''"
                                @click="tableSort(column, 'down', `${index}-2`)"></i>
                         </span>
-                        <sub class="split" @mousedown="splitDown($event,index, column)"></sub>
+                        <!--<sub class="split" @mousedown="splitDown($event,index, column)"></sub>-->
                     </th>
                 </tr>
                 </thead>

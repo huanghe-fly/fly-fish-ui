@@ -33,7 +33,7 @@
                                        :class="actionSortIcon === `${index}-2`? 'actionSort':''"
                                        @click="tableSort(column, 'down', `${index}-2`)"></i>
                                 </span>
-                                <sub class="split" @mousedown="splitDown($event,index,column)"></sub>
+                                <!--<sub class="split" @mousedown="splitDown($event,index,column)"></sub>-->
                             </th>
                         </template>
                     </template>
@@ -65,11 +65,11 @@
                             </template>
                             <template v-else>
                                 <td :width="column.width" :align="column.align" :class="`td_${i}`">
-                                        <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
-                                            <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
-                                                        :row="item"></table-body>
-                                            <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
-                                        </span>
+                                    <span class="tdWrapper" :style="{'height': `${rowHeight}px`}">
+                                        <table-body v-if="column.bodySlots" :scopedSlots="column.bodySlots"
+                                                    :row="item"></table-body>
+                                        <span v-if="!column.bodySlots">{{item[column.dataIndex]}}</span>
+                                    </span>
                                 </td>
                             </template>
                         </template>

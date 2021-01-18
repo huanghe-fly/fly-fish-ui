@@ -40,7 +40,7 @@
                                            :class="actionSortIcon === `${index}-2`? 'actionSort':''"
                                            @click="tableSort(column, 'down', `${index}-2`)"></i>
                                     </span>
-                                    <sub class="split" @mousedown="splitDown($event, index, column)"></sub>
+                                    <!--<sub class="split" @mousedown="splitDown($event, index, column)"></sub>-->
                                 </th>
                             </template>
                         </template>
@@ -435,7 +435,7 @@
             },
             // 拖拽
             splitDown(e, index, column) {
-                const vm = this;
+                /*const vm = this;
                 let divx = e.clientX;
                 let thName = '.th_' + index;
                 let tdName = '.td_' + index;
@@ -454,7 +454,7 @@
                     moveW = e.clientX - divx;
                     document.body.style.cursor = 'col-resize'; // 鼠标样式
                     vm.$set(column, 'width', width + moveW)
-                    /*thDom.forEach((item, index) => {
+                    /!*thDom.forEach((item, index) => {
                         item.style.width = width + moveW + 'px';
                         tdDom[index].style.width = width + moveW + 'px';
                         tdDom[index + tdDom.length / 2].style.width = width + moveW + 'px';
@@ -463,13 +463,13 @@
                     tabDom.querySelector(".fly-table-body table").style.width = tabW + moveW + 'px';
                     if (fixedTabW > 0) {
                         tabDom.querySelector(".fly-table-fixed-left").style.width = fixedTabW + moveW + 'px';
-                    }*/
+                    }*!/
                 };
                 document.onmouseup = function (e) { // 鼠标松开
                     document.body.style.cursor = 'default'; // 鼠标样式
                     document.onmousemove = null;
                     document.onmouseup = null;
-                }
+                }*/
             }
         },
         mounted() {
