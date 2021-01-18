@@ -9,10 +9,8 @@
 
 <script>
     import FlySelect from '@/packages/base/fly-select/fly-select'
-    // import { mixin } from '@/views/baseComponents/mixin.js';
     export default {
         name: 'selectDemo',
-        // mixins: [mixin],
         props: {},
         components: {FlySelect},
         data() {

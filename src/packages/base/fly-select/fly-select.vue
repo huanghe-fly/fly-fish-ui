@@ -17,10 +17,8 @@
 </template>
 
 <script>
-    // import { mixin } from '@/views/baseComponents/mixin.js';
     export default {
         name: "fly-select",
-        // mixins: [mixin],
         props: {
             width: [Number, String],
             placeholder: String,
